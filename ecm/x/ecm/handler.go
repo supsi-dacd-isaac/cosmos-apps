@@ -2,6 +2,7 @@ package ecm
 
 import (
 	"fmt"
+	ecmutils "github.com/supsi-dacd-isaac/cosmos-apps/ecm/x/ecm/utils"
 
 	"github.com/supsi-dacd-isaac/cosmos-apps/ecm/x/ecm/types"
 
@@ -13,6 +14,8 @@ import (
 func NewHandler(keeper Keeper) sdk.Handler {
 	return func(ctx sdk.Context, msg sdk.Msg) (*sdk.Result, error) {
 		switch msg := msg.(type) {
+		case types.MsgSetAdmin:
+			return handleMsgSetAdmin(ctx, keeper, msg)
 		case types.MsgSetMeasure:
 			return handleMsgSetMeasure(ctx, keeper, msg)
 		default:
@@ -23,11 +26,27 @@ func NewHandler(keeper Keeper) sdk.Handler {
 
 // Handle a message to set name
 func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure) (*sdk.Result, error) {
-	_, err := keeper.CoinKeeper.SubtractCoins(ctx, msg.Meter, msg.Cost) // If so, deduct the Bid amount from the sender
+	_, err := keeper.CoinKeeper.SubtractCoins(ctx, msg.Account, msg.Cost) // If so, deduct the Bid amount from the sender
 	if err != nil {
 		return nil, err
 	}
 
 	keeper.SetMeasure(ctx, msg)
+	return &sdk.Result{}, nil
+}
+
+// Handle a message to set the administrator
+func handleMsgSetAdmin(ctx sdk.Context, keeper Keeper, msg types.MsgSetAdmin) (*sdk.Result, error) {
+
+	admin := keeper.GetAdmin(ctx, "admin")
+	macs, _ := ecmutils.GetMacAddr()
+	hashedMac := ecmutils.CalcSHA512Hash(macs[0])
+
+	// Check if the account doing the transaction is not allowed to modify the admin register
+	if admin.Id != hashedMac && len(admin.Id) > 0 && len(admin.Account) > 0 {
+		return nil, nil
+	}
+
+	keeper.SetAdmin(ctx, msg)
 	return &sdk.Result{}, nil
 }

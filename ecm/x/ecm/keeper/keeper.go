@@ -25,11 +25,11 @@ func NewKeeper(cdc *codec.Codec, storeKey sdk.StoreKey, coinKeeper types.BankKee
 	}
 }
 
-// Gets the entire Whois metadata struct for a name
+// Gets the entire Measure metadata struct for a name
 func (k Keeper) GetMeasure(ctx sdk.Context, measureId string) types.Measure {
 	store := ctx.KVStore(k.storeKey)
 
-	if !k.IsMeasurePresent(ctx, measureId) {
+	if !k.IsKVPresent(ctx, measureId) {
 		return types.NewMeasure()
 	}
 
@@ -40,24 +40,61 @@ func (k Keeper) GetMeasure(ctx sdk.Context, measureId string) types.Measure {
 	return measure
 }
 
-// Check if the name is present in the store or not
-func (k Keeper) IsMeasurePresent(ctx sdk.Context, measureId string) bool {
+// Gets the entire Measure metadata struct for a name
+func (k Keeper) GetAdmin(ctx sdk.Context, key string) types.Admin {
 	store := ctx.KVStore(k.storeKey)
-	return store.Has([]byte(measureId))
+
+	if !k.IsKVPresent(ctx, key) {
+		return types.NewAdmin()
+	}
+
+	bz := store.Get([]byte(key))
+
+	var admin types.Admin
+	k.cdc.MustUnmarshalBinaryBare(bz, &admin)
+	return admin
 }
 
+// Check if the name is present in the store or not
+func (k Keeper) IsKVPresent(ctx sdk.Context, key string) bool {
+	store := ctx.KVStore(k.storeKey)
+	return store.Has([]byte(key))
+}
 
 // SetName - sets the value string that a name resolves to
 func (k Keeper) SetMeasure(ctx sdk.Context, msg types.MsgSetMeasure) {
-	measureId := (fmt.Sprintf("energy_%s_%s", string(msg.Timestamp), msg.Meter.String()))
-	measure := k.GetMeasure(ctx, measureId)
+	// Define the measure key
+	measureKey := fmt.Sprintf("energy_%s_%s", msg.Timestamp, msg.MeterId)
 
-	measure.Signal = "energy"
+	fmt.Println(measureKey)
+
+	// Get the (eventual) key in the KVStore
+	measure := k.GetMeasure(ctx, measureKey)
+
+	// Update the KV instance
+	measure.Signal = msg.Signal
 	measure.Timestamp = msg.Timestamp
 	measure.Value = msg.Value
-	measure.Meter = msg.Meter
+	measure.MeterId = msg.MeterId
 	measure.Cost = msg.Cost
+	measure.Account = msg.Account
 
+	// Set the updated dataset
 	store := ctx.KVStore(k.storeKey)
-	store.Set([]byte(measureId), k.cdc.MustMarshalBinaryBare(measure))
+	store.Set([]byte(measureKey), k.cdc.MustMarshalBinaryBare(measure))
+}
+
+// SetName - sets the value string that a name resolves to
+func (k Keeper) SetAdmin(ctx sdk.Context, msg types.MsgSetAdmin) {
+	// Get the (eventual) key in the KVStore
+
+	admin := types.NewAdmin()
+
+	// Update the KV instance
+	admin.Id = msg.Id
+	admin.Account = msg.Account
+
+	// Set the updated dataset
+	store := ctx.KVStore(k.storeKey)
+	store.Set([]byte("admin"), k.cdc.MustMarshalBinaryBare(admin))
 }

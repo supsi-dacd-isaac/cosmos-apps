@@ -10,6 +10,7 @@ import (
 // query endpoints supported by the ECM Querier
 const (
 	QueryMeasure = "measure"
+	QueryAdmin   = "admin"
 )
 
 // NewQuerier is the module level router for state queries
@@ -18,6 +19,8 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 		switch path[0] {
 		case QueryMeasure:
 			return queryMeasure(ctx, path[1:], req, keeper)
+		case QueryAdmin:
+			return queryAdmin(ctx, path[1:], req, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown ECM query endpoint")
 		}
@@ -25,9 +28,20 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 }
 
 func queryMeasure(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
-	whois := keeper.GetMeasure(ctx, path[0])
+	measure := keeper.GetMeasure(ctx, path[0])
 
-	res, err := codec.MarshalJSONIndent(keeper.cdc, whois)
+	res, err := codec.MarshalJSONIndent(keeper.cdc, measure)
+	if err != nil {
+		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
+	}
+
+	return res, nil
+}
+
+func queryAdmin(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
+	admin := keeper.GetAdmin(ctx, path[0])
+
+	res, err := codec.MarshalJSONIndent(keeper.cdc, admin)
 	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrJSONMarshal, err.Error())
 	}

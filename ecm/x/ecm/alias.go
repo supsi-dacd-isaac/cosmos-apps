@@ -13,16 +13,18 @@ const (
 )
 
 var (
-	NewKeeper        = keeper.NewKeeper
-	NewQuerier       = keeper.NewQuerier
+	NewKeeper  = keeper.NewKeeper
+	NewQuerier = keeper.NewQuerier
 
 	NewMsgSetMeasure = types.NewMsgSetMeasure
+	NewMsgSetAdmin   = types.NewMsgSetAdmin
 
-	ModuleCdc        = types.ModuleCdc
-	RegisterCodec    = types.RegisterCodec
+	ModuleCdc     = types.ModuleCdc
+	RegisterCodec = types.RegisterCodec
 )
 
 type (
-	Keeper          	= keeper.Keeper
-	MsgSetNameMeasure	= types.MsgSetMeasure
+	Keeper        = keeper.Keeper
+	MsgSetMeasure = types.MsgSetMeasure
+	MsgSetAdmin   = types.MsgSetAdmin
 )
