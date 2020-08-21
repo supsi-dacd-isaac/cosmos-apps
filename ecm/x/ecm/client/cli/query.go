@@ -23,6 +23,7 @@ func GetQueryCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 	ecmQueryCmd.AddCommand(flags.GetCommands(
 		GetCmdMeasure(storeKey, cdc),
 		GetCmdAdmin(storeKey, cdc),
+		GetCmdAllowed(storeKey, cdc),
 	)...)
 
 	return ecmQueryCmd
@@ -37,9 +38,9 @@ func GetCmdMeasure(queryRoute string, cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 
-			// todo Check if can read the measurement of another meter (i.e. you are the admin!)
-			// ADMIN -> args[2] (id) is used for the measure
-			// NOT ADMIN -> args[2] (id) is not used, hash(MAC) is calculated
+			// todo Handle the id as follows
+			// 	ADMIN -> args[2] (id) is used for the measure
+			// 	NOT ADMIN -> args[2] (id) is not used, hash(MAC) is calculated
 			idMeasure := (fmt.Sprintf("%s_%s_%s", args[0], args[1], args[2]))
 
 			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/measure/%s", queryRoute, idMeasure), nil)
@@ -55,16 +56,14 @@ func GetCmdMeasure(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	}
 }
 
-// GetCmdAdmin 	e queries information about the admin
+// GetCmdAdmin queries information about admin register
 func GetCmdAdmin(queryRoute string, cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "admin",
-		Short: "Query about admin",
+		Short: "Query about admin register",
 		Args:  cobra.ExactArgs(0),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
-
-			// todo check if you are the admin!
 
 			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/admin/%s", queryRoute, "admin"), nil)
 			if err != nil {
@@ -72,10 +71,9 @@ func GetCmdAdmin(queryRoute string, cdc *codec.Codec) *cobra.Command {
 				return nil
 			}
 
+			// Check if admin
 			var out types.Admin
 			cdc.MustUnmarshalJSON(res, &out)
-
-			// Check if can read the measurement of another meter (i.e. you are the admin!)
 			macs, _ := ecmutils.GetMacAddr()
 			hashedMac := ecmutils.CalcSHA512Hash(macs[0])
 			if out.Id != hashedMac {
@@ -84,6 +82,46 @@ func GetCmdAdmin(queryRoute string, cdc *codec.Codec) *cobra.Command {
 			}
 
 			return cliCtx.PrintOutput(out)
+		},
+	}
+}
+
+// GetCmdAllowed queries information about allowed register
+func GetCmdAllowed(queryRoute string, cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "allowed",
+		Short: "Query about allowed register",
+		Args:  cobra.ExactArgs(0),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+
+			// Read the admin register
+			resAdmin, _, errAdmin := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/admin/%s", queryRoute, "admin"), nil)
+			if errAdmin != nil {
+				fmt.Printf("could not resolve key - %s \n", "admin")
+				return nil
+			}
+
+			// Check if admin
+			var outAdmin types.Admin
+			cdc.MustUnmarshalJSON(resAdmin, &outAdmin)
+			macs, _ := ecmutils.GetMacAddr()
+			hashedMac := ecmutils.CalcSHA512Hash(macs[0])
+			if outAdmin.Id != hashedMac {
+				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! Not allowed to access the allowed register"})
+				return cliCtx.PrintOutput(string(ad))
+			}
+
+			// Read the allowed register
+			resAllowed, _, errAllowed := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/allowed/%s", queryRoute, "allowed"), nil)
+			if errAllowed != nil {
+				fmt.Printf("could not resolve key - %s \n", "allowed")
+				return nil
+			}
+			var outAllowed types.Allowed
+			cdc.MustUnmarshalJSON(resAllowed, &outAllowed)
+
+			return cliCtx.PrintOutput(outAllowed)
 		},
 	}
 }

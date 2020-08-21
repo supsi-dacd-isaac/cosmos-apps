@@ -15,4 +15,5 @@ func init() {
 func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgSetMeasure{}, "ecm/SetMeasure", nil)
 	cdc.RegisterConcrete(MsgSetAdmin{}, "ecm/SetAdmin", nil)
+	cdc.RegisterConcrete(MsgSetAllowed{}, "ecm/SetAllowed", nil)
 }

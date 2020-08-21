@@ -14,7 +14,7 @@ func TestMsgSetMeasure(t *testing.T) {
 	value := "1"
 	acc := sdk.AccAddress([]byte("me"))
 	cost := sdk.NewCoins(sdk.NewInt64Coin("ectoken", 10))
-	var msg = NewMsgSetMeasure(timestamp, value, cost, acc)
+	var msg = NewMsgSetMeasure("energy", timestamp, "meter-01", value, cost, acc)
 
 	require.Equal(t, msg.Route(), RouterKey)
 	require.Equal(t, msg.Type(), "set_measure")

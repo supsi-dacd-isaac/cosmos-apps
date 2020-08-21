@@ -2,8 +2,6 @@ package ecm
 
 import (
 	"fmt"
-	ecmutils "github.com/supsi-dacd-isaac/cosmos-apps/ecm/x/ecm/utils"
-
 	"github.com/supsi-dacd-isaac/cosmos-apps/ecm/x/ecm/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -18,6 +16,8 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgSetAdmin(ctx, keeper, msg)
 		case types.MsgSetMeasure:
 			return handleMsgSetMeasure(ctx, keeper, msg)
+		case types.MsgSetAllowed:
+			return handleMsgSetAllowed(ctx, keeper, msg)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized ecm Msg type: %v", msg.Type()))
 		}
@@ -35,18 +35,26 @@ func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure
 	return &sdk.Result{}, nil
 }
 
-// Handle a message to set the administrator
+// Handle a message to set the admin register
 func handleMsgSetAdmin(ctx sdk.Context, keeper Keeper, msg types.MsgSetAdmin) (*sdk.Result, error) {
 
-	admin := keeper.GetAdmin(ctx, "admin")
-	macs, _ := ecmutils.GetMacAddr()
-	hashedMac := ecmutils.CalcSHA512Hash(macs[0])
-
-	// Check if the account doing the transaction is not allowed to modify the admin register
-	if admin.Id != hashedMac && len(admin.Id) > 0 && len(admin.Account) > 0 {
+	// Check if the account doing the transaction is not the administrator
+	if !keeper.IsAdmin(ctx) {
 		return nil, nil
 	}
 
 	keeper.SetAdmin(ctx, msg)
+	return &sdk.Result{}, nil
+}
+
+// Handle a message to set the allowed register
+func handleMsgSetAllowed(ctx sdk.Context, keeper Keeper, msg types.MsgSetAllowed) (*sdk.Result, error) {
+
+	// Check if the account doing the transaction is not the administrator
+	if !keeper.IsAdmin(ctx) {
+		return nil, nil
+	}
+
+	keeper.SetAllowed(ctx, msg)
 	return &sdk.Result{}, nil
 }

@@ -30,6 +30,7 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 	ecmTxCmd.AddCommand(flags.PostCommands(
 		GetCmdSetMeasure(cdc),
 		GetCmdSetAdmin(cdc),
+		GetCmdSetAllowed(cdc),
 	)...)
 
 	return ecmTxCmd
@@ -78,7 +79,7 @@ func GetCmdSetMeasure(cdc *codec.Codec) *cobra.Command {
 func GetCmdSetAdmin(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "set-admin [id]",
-		Short: "set the admin identifier",
+		Short: "set the admin register with the administrator identifier",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
@@ -88,6 +89,30 @@ func GetCmdSetAdmin(cdc *codec.Codec) *cobra.Command {
 			//Check if your are allowed to change the admin register (i.e. you are the admin)
 			// Launch the message
 			msg := types.NewMsgSetAdmin(args[0], cliCtx.GetFromAddress())
+			err := msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+}
+
+// GetCmdSetAllowed is the CLI command for sending a SetAllowed transaction
+func GetCmdSetAllowed(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "set-allowed [allowed_string]",
+		Short: "set the allowed register",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+
+			fmt.Println(args[0])
+			// Launch the message
+			msg := types.NewMsgSetAllowed(args[0], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err

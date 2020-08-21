@@ -5,6 +5,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/supsi-dacd-isaac/cosmos-apps/ecm/x/ecm/types"
+	ecmutils "github.com/supsi-dacd-isaac/cosmos-apps/ecm/x/ecm/utils"
 )
 
 // Keeper maintains the link to storage and exposes getter/setter methods for the various parts of the state machine
@@ -55,10 +56,38 @@ func (k Keeper) GetAdmin(ctx sdk.Context, key string) types.Admin {
 	return admin
 }
 
-// Check if the name is present in the store or not
+// Gets the entire Measure metadata struct for a name
+func (k Keeper) GetAllowed(ctx sdk.Context, key string) types.Allowed {
+	store := ctx.KVStore(k.storeKey)
+
+	if !k.IsKVPresent(ctx, key) {
+		return types.NewAllowed()
+	}
+
+	bz := store.Get([]byte(key))
+
+	var allowed types.Allowed
+	k.cdc.MustUnmarshalBinaryBare(bz, &allowed)
+	return allowed
+}
+
+// Check if the KV element is present in the store or not
 func (k Keeper) IsKVPresent(ctx sdk.Context, key string) bool {
 	store := ctx.KVStore(k.storeKey)
 	return store.Has([]byte(key))
+}
+
+// Check if the node is the administrator
+func (k Keeper) IsAdmin(ctx sdk.Context) bool {
+	admin := k.GetAdmin(ctx, "admin")
+	macs, _ := ecmutils.GetMacAddr()
+	hashedMac := ecmutils.CalcSHA512Hash(macs[0])
+
+	if admin.Id == hashedMac || len(admin.Id) == 0 {
+		return true
+	} else {
+		return false
+	}
 }
 
 // SetName - sets the value string that a name resolves to
@@ -84,17 +113,26 @@ func (k Keeper) SetMeasure(ctx sdk.Context, msg types.MsgSetMeasure) {
 	store.Set([]byte(measureKey), k.cdc.MustMarshalBinaryBare(measure))
 }
 
-// SetName - sets the value string that a name resolves to
+// SetAdmin - sets the admin register
 func (k Keeper) SetAdmin(ctx sdk.Context, msg types.MsgSetAdmin) {
-	// Get the (eventual) key in the KVStore
-
-	admin := types.NewAdmin()
-
 	// Update the KV instance
+	admin := types.NewAdmin()
 	admin.Id = msg.Id
 	admin.Account = msg.Account
 
 	// Set the updated dataset
 	store := ctx.KVStore(k.storeKey)
 	store.Set([]byte("admin"), k.cdc.MustMarshalBinaryBare(admin))
+}
+
+// SetAllowed - sets the allowed register
+func (k Keeper) SetAllowed(ctx sdk.Context, msg types.MsgSetAllowed) {
+	// Update the KV instance
+	allowed := types.NewAllowed()
+	allowed.Allowed = msg.Allowed
+	allowed.Account = msg.Account
+
+	// Set the updated dataset
+	store := ctx.KVStore(k.storeKey)
+	store.Set([]byte("allowed"), k.cdc.MustMarshalBinaryBare(allowed))
 }
