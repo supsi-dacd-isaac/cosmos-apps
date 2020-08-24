@@ -26,6 +26,11 @@ func NewHandler(keeper Keeper) sdk.Handler {
 
 // Handle a message to set name
 func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure) (*sdk.Result, error) {
+	// Check the allowance
+	if !keeper.IsAllowed(ctx, msg.MeterId) {
+		return nil, nil
+	}
+
 	_, err := keeper.CoinKeeper.SubtractCoins(ctx, msg.Account, msg.Cost) // If so, deduct the Bid amount from the sender
 	if err != nil {
 		return nil, err

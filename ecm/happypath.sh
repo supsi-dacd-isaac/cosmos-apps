@@ -6,9 +6,13 @@ OLD=c5694a93541db032e136404cf82ce6d6834da188d7c331078026ecab6d0d555e3fcd39a7eee2
 ecmcli query account $(ecmcli keys show $NEW -a) | jq ".value.coins[0]"
 ecmcli query account $(ecmcli keys show $OLD -a) | jq ".value.coins[0]"
 
-# Admin management
+# Admin register management
 ecmcli tx ecm set-admin $NEW --from $NEW -y
 ecmcli query ecm admin
+
+# Allowed register management
+ecmcli tx ecm set-allowed $NEW,$OLD --from $NEW -y
+ecmcli query ecm allowed
 
 # Measures management
 # 100 -> UNIX timestamp

@@ -42,7 +42,7 @@ func queryMeasure(ctx sdk.Context, path []string, req abci.RequestQuery, keeper 
 }
 
 func queryAdmin(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
-	admin := keeper.GetAdmin(ctx, path[0])
+	admin := keeper.GetAdmin(ctx)
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, admin)
 	if err != nil {
@@ -53,7 +53,7 @@ func queryAdmin(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Ke
 }
 
 func queryAllowed(ctx sdk.Context, path []string, req abci.RequestQuery, keeper Keeper) ([]byte, error) {
-	allowed := keeper.GetAllowed(ctx, path[0])
+	allowed := keeper.GetAllowed(ctx)
 
 	res, err := codec.MarshalJSONIndent(keeper.cdc, allowed)
 	if err != nil {

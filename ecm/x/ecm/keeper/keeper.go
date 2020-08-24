@@ -6,6 +6,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/supsi-dacd-isaac/cosmos-apps/ecm/x/ecm/types"
 	ecmutils "github.com/supsi-dacd-isaac/cosmos-apps/ecm/x/ecm/utils"
+	"strings"
 )
 
 // Keeper maintains the link to storage and exposes getter/setter methods for the various parts of the state machine
@@ -42,7 +43,8 @@ func (k Keeper) GetMeasure(ctx sdk.Context, measureId string) types.Measure {
 }
 
 // Gets the entire Measure metadata struct for a name
-func (k Keeper) GetAdmin(ctx sdk.Context, key string) types.Admin {
+func (k Keeper) GetAdmin(ctx sdk.Context) types.Admin {
+	key := "admin"
 	store := ctx.KVStore(k.storeKey)
 
 	if !k.IsKVPresent(ctx, key) {
@@ -57,7 +59,8 @@ func (k Keeper) GetAdmin(ctx sdk.Context, key string) types.Admin {
 }
 
 // Gets the entire Measure metadata struct for a name
-func (k Keeper) GetAllowed(ctx sdk.Context, key string) types.Allowed {
+func (k Keeper) GetAllowed(ctx sdk.Context) types.Allowed {
+	key := "allowed"
 	store := ctx.KVStore(k.storeKey)
 
 	if !k.IsKVPresent(ctx, key) {
@@ -70,6 +73,25 @@ func (k Keeper) GetAllowed(ctx sdk.Context, key string) types.Allowed {
 	k.cdc.MustUnmarshalBinaryBare(bz, &allowed)
 	return allowed
 }
+func Find(slice []string, val string) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
+}
+
+func (k Keeper) IsAllowed(ctx sdk.Context, meterId string) bool {
+	data := k.GetAllowed(ctx)
+	allowedMeters := strings.Split(data.Allowed, ",")
+
+	if Find(allowedMeters, meterId) {
+		return true
+	} else {
+		return false
+	}
+}
 
 // Check if the KV element is present in the store or not
 func (k Keeper) IsKVPresent(ctx sdk.Context, key string) bool {
@@ -79,7 +101,7 @@ func (k Keeper) IsKVPresent(ctx sdk.Context, key string) bool {
 
 // Check if the node is the administrator
 func (k Keeper) IsAdmin(ctx sdk.Context) bool {
-	admin := k.GetAdmin(ctx, "admin")
+	admin := k.GetAdmin(ctx)
 	macs, _ := ecmutils.GetMacAddr()
 	hashedMac := ecmutils.CalcSHA512Hash(macs[0])
 
@@ -94,8 +116,6 @@ func (k Keeper) IsAdmin(ctx sdk.Context) bool {
 func (k Keeper) SetMeasure(ctx sdk.Context, msg types.MsgSetMeasure) {
 	// Define the measure key
 	measureKey := fmt.Sprintf("energy_%s_%s", msg.Timestamp, msg.MeterId)
-
-	fmt.Println(measureKey)
 
 	// Get the (eventual) key in the KVStore
 	measure := k.GetMeasure(ctx, measureKey)
