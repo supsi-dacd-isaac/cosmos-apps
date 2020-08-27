@@ -36,6 +36,12 @@ func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure
 		return nil, err
 	}
 
+	//coinsToMint, _ := sdk.ParseCoins("10")
+	//_, errMinting := keeper.CoinKeeper.AddCoins(ctx, msg.Account, msg.Cost)
+	//if errMinting != nil {
+	//	return nil, errMinting
+	//}
+
 	keeper.SetMeasure(ctx, msg)
 	return &sdk.Result{}, nil
 }
