@@ -3,7 +3,7 @@ package ps
 import (
 	"fmt"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/types"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
 )
 
 type GenesisState struct {

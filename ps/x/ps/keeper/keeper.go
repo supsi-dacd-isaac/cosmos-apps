@@ -7,7 +7,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/bank"
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/types"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
 )
 
 // Keeper of the ps store

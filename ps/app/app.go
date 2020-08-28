@@ -22,9 +22,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/params"
 	"github.com/cosmos/cosmos-sdk/x/staking"
 	"github.com/cosmos/cosmos-sdk/x/supply"
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps"
-	pskeeper "github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/keeper"
-	pstypes "github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/types"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps"
+	pskeeper "github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/keeper"
+	pstypes "github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
 	// this line is used by starport scaffolding
 )
 

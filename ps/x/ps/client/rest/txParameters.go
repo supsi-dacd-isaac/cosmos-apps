@@ -7,7 +7,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/rest"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/types"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
 )
 
 type createParametersRequest struct {

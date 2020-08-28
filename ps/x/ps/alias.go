@@ -1,8 +1,8 @@
 package ps
 
 import (
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/keeper"
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/types"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/keeper"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
 )
 
 const (

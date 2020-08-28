@@ -2,7 +2,7 @@ package ps
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/keeper"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/keeper"
 	abci "github.com/tendermint/tendermint/abci/types"
 	// abci "github.com/tendermint/tendermint/abci/types"
 )

@@ -4,8 +4,8 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/types"
-	psutils "github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/utils"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
+	psutils "github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/utils"
 )
 
 // Gets the entire Measure metadata struct for a name

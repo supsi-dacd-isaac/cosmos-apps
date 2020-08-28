@@ -1,4 +1,4 @@
-module github.com/supsi-dacd-isaac/cosmos-app/ps
+module github.com/supsi-dacd-isaac/cosmos-apps/ps
 
 go 1.14
 

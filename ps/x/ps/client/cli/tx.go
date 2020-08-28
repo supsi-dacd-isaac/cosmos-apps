@@ -3,7 +3,7 @@ package cli
 import (
 	"bufio"
 	"fmt"
-	psutils "github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/utils"
+	psutils "github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/utils"
 	"strconv"
 
 	"github.com/spf13/cobra"
@@ -15,7 +15,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth"
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
-	"github.com/supsi-dacd-isaac/cosmos-app/ps/x/ps/types"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
 )
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
