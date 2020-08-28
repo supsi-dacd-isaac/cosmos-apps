@@ -2,9 +2,8 @@ package types
 
 import (
 	"fmt"
-	"strings"
-
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	"strings"
 )
 
 type Error struct {

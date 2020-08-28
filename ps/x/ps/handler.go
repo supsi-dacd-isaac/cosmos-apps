@@ -5,6 +5,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
+	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/utils"
 )
 
 // NewHandler returns a handler for "ecm" type messages.
@@ -34,9 +35,13 @@ func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure
 		return nil, nil
 	}
 
-	_, err := keeper.CoinKeeper.SubtractCoins(ctx, msg.Account, msg.Cost) // If so, deduct the Bid amount from the sender
+	// Update the cost according to the conversion factor
+	pars := keeper.GetParameters(ctx)
+	msg.Cost = utils.MulCoins(msg.Cost, pars.ConsConvFactor)
+
+	_, err := keeper.CoinKeeper.SubtractCoins(ctx, msg.Account, msg.Cost)
 	if err != nil {
-		return nil, err
+		return nil, nil
 	}
 
 	keeper.SetMeasure(ctx, msg)

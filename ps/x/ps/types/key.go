@@ -17,3 +17,7 @@ const (
 const (
 	ParametersPrefix = "parameters-"
 )
+
+const (
+	TokenName = "ectoken"
+)

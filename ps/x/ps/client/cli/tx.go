@@ -50,14 +50,14 @@ func GetCmdSetMeasure(cdc *codec.Codec) *cobra.Command {
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 
 			val, _ := strconv.Atoi(args[1])
-			// todo 1 must be configured! Now 1 Wh = 1 coin
-			strCoins := fmt.Sprintf("%dectoken", (val * 1))
+			strCoins := fmt.Sprintf("%d%s", val, types.TokenName)
 			coins, errCoins := sdk.ParseCoins(strCoins)
 			if errCoins != nil {
 				return errCoins
 			}
 
 			// todo HERE CHECK IF THE USER DOING THE TRANSACTION ON THE PROPER METER
+			//  Save a register meter_$HASHMAC = $ACCOUNT, that can be set/read only by the admin
 			macs, _ := psutils.GetMacAddr()
 			hashedMac := psutils.CalcSHA512Hash(macs[0])
 
@@ -113,7 +113,7 @@ func GetCmdTokenMinting(cdc *codec.Codec) *cobra.Command {
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 
 			val, _ := strconv.Atoi(args[0])
-			strCoins := fmt.Sprintf("%dectoken", val)
+			strCoins := fmt.Sprintf("%d%s", val, types.TokenName)
 			coins, errCoins := sdk.ParseCoins(strCoins)
 			if errCoins != nil {
 				return errCoins
