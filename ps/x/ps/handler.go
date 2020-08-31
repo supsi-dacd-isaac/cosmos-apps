@@ -22,6 +22,8 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgSetParameters(ctx, keeper, msg)
 		case types.MsgTokensMinting:
 			return handleMsgTokensMinting(ctx, keeper, msg)
+		case types.MsgCreateMeterAccount:
+			return handleMsgCreateMeterAccount(ctx, keeper, msg)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, fmt.Sprintf("Unrecognized Msg type: %v", msg.Type()))
 		}
@@ -32,6 +34,11 @@ func NewHandler(keeper Keeper) sdk.Handler {
 func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure) (*sdk.Result, error) {
 	// Check the allowance
 	if !keeper.IsAllowed(ctx, msg.MeterId) {
+		return nil, nil
+	}
+
+	// Check the correspondence meter-account (this part should substitute the allowance checking before)
+	if !keeper.CheckMeterAccount(ctx, msg.Account) {
 		return nil, nil
 	}
 
@@ -103,6 +110,22 @@ func handleMsgSetParameters(ctx sdk.Context, keeper Keeper, msg types.MsgSetPara
 	}
 
 	keeper.SetParameters(ctx, parameters)
+
+	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
+}
+
+// Handle a message to create an istance meter-account
+func handleMsgCreateMeterAccount(ctx sdk.Context, keeper Keeper, msg types.MsgCreateMeterAccount) (*sdk.Result, error) {
+	var meterAccount = types.MeterAccount{
+		Meter:   msg.Meter,
+		Account: msg.Account,
+		Admin:   msg.Admin,
+	}
+	if !keeper.IsAdmin(ctx) {
+		return nil, nil
+	}
+
+	keeper.CreateMeterAccount(ctx, meterAccount)
 
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }

@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgSetAllowed{}, "ps/SetAllowed", nil)
 	cdc.RegisterConcrete(MsgSetParameters{}, "ps/SetParameters", nil)
 	cdc.RegisterConcrete(MsgTokensMinting{}, "ps/TokenMinting", nil)
+	cdc.RegisterConcrete(MsgCreateMeterAccount{}, "ps/MsgCreateMeterAccount", nil)
 }
 
 // ModuleCdc defines the module codec

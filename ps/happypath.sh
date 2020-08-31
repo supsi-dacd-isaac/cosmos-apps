@@ -23,5 +23,9 @@ pscli query ps list-parameters
 # 100 -> UNIX timestamp
 # 2 -> energy consumed  (Wh)
 pscli tx ps set-measure 100 1 --from $NEW -y
+pscli tx ps set-measure 100 1 --from $NEW -y | jq ".txhash" | xargs $(sleep 6) pscli q tx
 pscli query ps measure energy 100 $NEW
 
+# Create correspondences meter-account
+pscli tx ps create-meterAccount $NEW cosmos1px45r5y3wktz039n9jw9wqs3r94mjr8tez0wpp --from $NEW -y
+pscli query ps list-meterAccount

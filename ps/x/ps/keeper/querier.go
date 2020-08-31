@@ -8,10 +8,11 @@ import (
 
 // query endpoints supported by the ECM Querier
 const (
-	QueryMeasure        = "measure"
-	QueryAdmin          = "admin"
-	QueryAllowed        = "allowed"
-	QueryListParameters = "list-parameters"
+	QueryMeasure          = "measure"
+	QueryAdmin            = "admin"
+	QueryAllowed          = "allowed"
+	QueryListParameters   = "list-parameters"
+	QueryListMeterAccount = "list-meterAccount"
 )
 
 // NewQuerier is the module level router for state queries
@@ -26,6 +27,8 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryAllowed(ctx, keeper)
 		case QueryListParameters:
 			return queryListParameters(ctx, keeper)
+		case QueryListMeterAccount:
+			return queryListMeterAccount(ctx, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown query endpoint")
 		}

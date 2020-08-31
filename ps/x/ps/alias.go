@@ -16,19 +16,20 @@ var (
 	NewKeeper  = keeper.NewKeeper
 	NewQuerier = keeper.NewQuerier
 
-	NewMsgSetMeasure    = types.NewMsgSetMeasure
-	NewMsgSetAdmin      = types.NewMsgSetAdmin
-	NewMsgSetAllowed    = types.NewMsgSetAllowed
-	NewMsgSetParameters = types.NewMsgSetParameters
-	NewMsgTokensMinting = types.NewMsgTokensMinting
+	NewMsgSetMeasure         = types.NewMsgSetMeasure
+	NewMsgSetAdmin           = types.NewMsgSetAdmin
+	NewMsgSetAllowed         = types.NewMsgSetAllowed
+	NewMsgSetParameters      = types.NewMsgSetParameters
+	NewMsgCreateMeterAccount = types.NewMsgCreateMeterAccount
 
 	ModuleCdc     = types.ModuleCdc
 	RegisterCodec = types.RegisterCodec
 )
 
 type (
-	Keeper        = keeper.Keeper
-	MsgSetMeasure = types.MsgSetMeasure
-	MsgSetAdmin   = types.MsgSetAdmin
-	MsgSetAllowed = types.MsgSetAllowed
+	Keeper                = keeper.Keeper
+	MsgSetMeasure         = types.MsgSetMeasure
+	MsgSetAdmin           = types.MsgSetAdmin
+	MsgSetAllowed         = types.MsgSetAllowed
+	MsgCreateMeterAccount = types.MsgCreateMeterAccount
 )

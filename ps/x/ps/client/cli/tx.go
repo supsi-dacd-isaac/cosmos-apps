@@ -33,6 +33,7 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 		GetCmdSetAllowed(cdc),
 		GetCmdSetParameters(cdc),
 		GetCmdTokenMinting(cdc),
+		GetCmdCreateMeterAccount(cdc),
 	)...)
 
 	return ecmTxCmd
@@ -157,6 +158,7 @@ func GetCmdSetAllowed(cdc *codec.Codec) *cobra.Command {
 	}
 }
 
+// GetCmdSetParameters is the CLI command for sending a SetParameters transaction
 func GetCmdSetParameters(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "set-parameters [prodConvFactor] [consConvFactor] [maxConsumption] [penalty]",
@@ -172,6 +174,29 @@ func GetCmdSetParameters(cdc *codec.Codec) *cobra.Command {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 			msg := types.NewMsgSetParameters(cliCtx.GetFromAddress(), argsProdConvFactor, argsConsConvFactor, argsMaxConsumption, argsPenalty)
+			err := msg.ValidateBasic()
+			if err != nil {
+				return err
+			}
+			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
+		},
+	}
+}
+
+// GetCmdCreateMeterAccount is the CLI command for sending a CreateMeterAccount transaction
+func GetCmdCreateMeterAccount(cdc *codec.Codec) *cobra.Command {
+	return &cobra.Command{
+		Use:   "create-meterAccount [meter] [account]",
+		Short: "Creates a new meterAccount",
+		Args:  cobra.MinimumNArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+
+			account, _ := sdk.AccAddressFromBech32(args[1])
+
+			cliCtx := context.NewCLIContext().WithCodec(cdc)
+			inBuf := bufio.NewReader(cmd.InOrStdin())
+			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+			msg := types.NewMsgCreateMeterAccount(args[0], account, cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err

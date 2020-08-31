@@ -21,3 +21,7 @@ const (
 const (
 	TokenName = "ectoken"
 )
+
+const (
+	MeterAccountPrefix = "meterAccount-"
+)

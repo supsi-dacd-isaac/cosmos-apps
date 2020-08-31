@@ -37,3 +37,7 @@ type QueryResParameters []string
 func (n QueryResParameters) String() string {
 	return strings.Join(n[:], "\n")
 }
+
+const (
+	QueryListMeterAccount = "list-meterAccount"
+)

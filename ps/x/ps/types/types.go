@@ -96,3 +96,10 @@ func (w TokensMinting) String() string {
 	return strings.TrimSpace(fmt.Sprintf(`Amount: %s Recipient: %s Minter: %s`,
 		w.Amount.String(), w.Recipient.String(), w.Minter.String()))
 }
+
+// MeterAccount section
+type MeterAccount struct {
+	Meter   string         `json:"meter" yaml:"meter"`
+	Account sdk.AccAddress `json:"account" yaml:"account"`
+	Admin   sdk.AccAddress `json:"admin" yaml:"admin"`
+}
