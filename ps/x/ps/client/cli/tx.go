@@ -2,6 +2,7 @@ package cli
 
 import (
 	"bufio"
+	"encoding/json"
 	"fmt"
 	psutils "github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/utils"
 	"strconv"
@@ -17,6 +18,40 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/client/utils"
 	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
 )
+
+func CheckAdmin(cdc *codec.Codec, res []byte, sender sdk.Address) bool {
+	var out types.Admin
+	cdc.MustUnmarshalJSON(res, &out)
+
+	if len(out.Id) == 0 && len(out.Account) == 0 {
+		return true
+	} else {
+		macs, _ := psutils.GetMacAddr()
+		hashedMac := psutils.CalcSHA512Hash(macs[0])
+
+		// Check if the MAC address and the account are related to the admin node
+		if out.Id != hashedMac || out.Account.String() != sender.String() {
+			return false
+		} else {
+			return true
+		}
+	}
+}
+
+func CheckMeterAccount(cdc *codec.Codec, res []byte, sender sdk.Address) bool {
+	var out []types.MeterAccount
+	cdc.MustUnmarshalJSON(res, &out)
+
+	macs, _ := psutils.GetMacAddr()
+	hashedMac := psutils.CalcSHA512Hash(macs[0])
+
+	for i := 0; i < len(out); i++ {
+		if out[i].Meter == hashedMac && out[i].Account.String() == sender.String() {
+			return true
+		}
+	}
+	return false
+}
 
 func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 	ecmTxCmd := &cobra.Command{
@@ -66,6 +101,14 @@ func GetCmdSetMeasure(cdc *codec.Codec) *cobra.Command {
 			meterId := hashedMac
 			signal := "energy"
 
+			// Introdurre quest check, probabilmente il registro allowed non serve più!!
+			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/"+types.QueryListMeterAccount), nil)
+
+			if !CheckMeterAccount(cdc, res, cliCtx.GetFromAddress()) {
+				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! The account trying to perform the TX is not allowed to insert measures"})
+				return cliCtx.PrintOutput(string(ad))
+			}
+
 			// Launch the message
 			msg := types.NewMsgSetMeasure(signal, args[0], meterId, args[1], coins, cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
@@ -89,7 +132,13 @@ func GetCmdSetAdmin(cdc *codec.Codec) *cobra.Command {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 
-			//Check if your are allowed to change the admin register (i.e. you are the admin)
+			// Check if the address performing the transaction is the administrator
+			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/admin/admin"), nil)
+			if !CheckAdmin(cdc, []byte(res), cliCtx.GetFromAddress()) {
+				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! The account trying to perform the TX is not the admin"})
+				return cliCtx.PrintOutput(string(ad))
+			}
+
 			// Launch the message
 			msg := types.NewMsgSetAdmin(args[0], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
@@ -112,6 +161,13 @@ func GetCmdTokenMinting(cdc *codec.Codec) *cobra.Command {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+
+			// Check if the address performing the transaction is the administrator
+			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/admin/admin"), nil)
+			if !CheckAdmin(cdc, []byte(res), cliCtx.GetFromAddress()) {
+				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! The account trying to perform the TX is not the admin"})
+				return cliCtx.PrintOutput(string(ad))
+			}
 
 			val, _ := strconv.Atoi(args[0])
 			strCoins := fmt.Sprintf("%d%s", val, types.TokenName)
@@ -145,7 +201,13 @@ func GetCmdSetAllowed(cdc *codec.Codec) *cobra.Command {
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
 
-			fmt.Println(args[0])
+			// Check if the address performing the transaction is the administrator
+			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/admin/admin"), nil)
+			if !CheckAdmin(cdc, []byte(res), cliCtx.GetFromAddress()) {
+				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! The account trying to perform the TX is not the admin"})
+				return cliCtx.PrintOutput(string(ad))
+			}
+
 			// Launch the message
 			msg := types.NewMsgSetAllowed(args[0], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
@@ -173,6 +235,14 @@ func GetCmdSetParameters(cdc *codec.Codec) *cobra.Command {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+
+			// Check if the address performing the transaction is the administrator
+			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/admin/admin"), nil)
+			if !CheckAdmin(cdc, []byte(res), cliCtx.GetFromAddress()) {
+				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! The account trying to perform the TX is not the admin"})
+				return cliCtx.PrintOutput(string(ad))
+			}
+
 			msg := types.NewMsgSetParameters(cliCtx.GetFromAddress(), argsProdConvFactor, argsConsConvFactor, argsMaxConsumption, argsPenalty)
 			err := msg.ValidateBasic()
 			if err != nil {
@@ -192,10 +262,17 @@ func GetCmdCreateMeterAccount(cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 
 			account, _ := sdk.AccAddressFromBech32(args[1])
-
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
+
+			// Check if the address performing the transaction is the administrator
+			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/admin/admin"), nil)
+			if !CheckAdmin(cdc, []byte(res), cliCtx.GetFromAddress()) {
+				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! The account trying to perform the TX is not the admin"})
+				return cliCtx.PrintOutput(string(ad))
+			}
+
 			msg := types.NewMsgCreateMeterAccount(args[0], account, cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {

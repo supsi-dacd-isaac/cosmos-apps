@@ -73,6 +73,8 @@ func GetCmdAdmin(queryRoute string, cdc *codec.Codec) *cobra.Command {
 				return nil
 			}
 
+			fmt.Sprintf("queryRoute -> %s", queryRoute)
+
 			// Check if admin
 			var out types.Admin
 			cdc.MustUnmarshalJSON(res, &out)
