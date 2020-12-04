@@ -32,16 +32,6 @@ func NewHandler(keeper Keeper) sdk.Handler {
 
 // Handle a message to set name
 func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure) (*sdk.Result, error) {
-	// Check the allowance
-	if !keeper.IsAllowed(ctx, msg.MeterId) {
-		return nil, nil
-	}
-
-	// Check the correspondence meter-account (this part should substitute the allowance checking before)
-	if !keeper.CheckMeterAccount(ctx, msg.Account) {
-		return nil, nil
-	}
-
 	// Update the cost according to the conversion factor
 	pars := keeper.GetParameters(ctx)
 	msg.Cost = utils.MulCoins(msg.Cost, pars.ConsConvFactor)
@@ -58,34 +48,18 @@ func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure
 // Handle a message to set the admin register
 func handleMsgSetAdmin(ctx sdk.Context, keeper Keeper, msg types.MsgSetAdmin) (*sdk.Result, error) {
 
-	// Check if the account doing the transaction is not the administrator
-	if !keeper.IsAdmin(ctx) {
-		return nil, nil
-	}
-
 	keeper.SetAdmin(ctx, msg)
 	return &sdk.Result{}, nil
 }
 
 // Handle a message to set the allowed register
 func handleMsgSetAllowed(ctx sdk.Context, keeper Keeper, msg types.MsgSetAllowed) (*sdk.Result, error) {
-
-	// Check if the account doing the transaction is not the administrator
-	if !keeper.IsAdmin(ctx) {
-		return nil, nil
-	}
-
 	keeper.SetAllowed(ctx, msg)
 	return &sdk.Result{}, nil
 }
 
 // Handle a message to mint tokens
 func handleMsgTokensMinting(ctx sdk.Context, keeper Keeper, msg types.MsgTokensMinting) (*sdk.Result, error) {
-	// Check if the minter is the administrator
-	if !keeper.IsAdmin(ctx) {
-		return nil, nil
-	}
-
 	_, err := keeper.CoinKeeper.AddCoins(ctx, msg.Recipient, msg.Amount)
 	if err != nil {
 		return nil, err
@@ -104,13 +78,7 @@ func handleMsgSetParameters(ctx sdk.Context, keeper Keeper, msg types.MsgSetPara
 		Penalty:        msg.Penalty,
 	}
 
-	// Check if the account doing the transaction is the administrator
-	if !keeper.IsAdmin(ctx) {
-		return nil, nil
-	}
-
 	keeper.SetParameters(ctx, parameters)
-
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }
 
@@ -121,11 +89,7 @@ func handleMsgCreateMeterAccount(ctx sdk.Context, keeper Keeper, msg types.MsgCr
 		Account: msg.Account,
 		Admin:   msg.Admin,
 	}
-	if !keeper.IsAdmin(ctx) {
-		return nil, nil
-	}
 
 	keeper.CreateMeterAccount(ctx, meterAccount)
-
 	return &sdk.Result{Events: ctx.EventManager().Events()}, nil
 }
