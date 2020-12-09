@@ -8,9 +8,9 @@ import (
 
 // query endpoints supported by the ECM Querier
 const (
-	QueryMeasure          = "measure"
-	QueryAdmin            = "admin"
-	QueryAllowed          = "allowed"
+	QueryMeasure = "measure"
+	QueryAdmin   = "admin"
+
 	QueryListParameters   = "list-parameters"
 	QueryListMeterAccount = "list-meterAccount"
 )
@@ -23,8 +23,6 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryMeasure(ctx, path[1:], keeper)
 		case QueryAdmin:
 			return queryAdmin(ctx, keeper)
-		case QueryAllowed:
-			return queryAllowed(ctx, keeper)
 		case QueryListParameters:
 			return queryListParameters(ctx, keeper)
 		case QueryListMeterAccount:

@@ -18,7 +18,6 @@ var (
 
 	NewMsgSetMeasure         = types.NewMsgSetMeasure
 	NewMsgSetAdmin           = types.NewMsgSetAdmin
-	NewMsgSetAllowed         = types.NewMsgSetAllowed
 	NewMsgSetParameters      = types.NewMsgSetParameters
 	NewMsgCreateMeterAccount = types.NewMsgCreateMeterAccount
 
@@ -30,6 +29,5 @@ type (
 	Keeper                = keeper.Keeper
 	MsgSetMeasure         = types.MsgSetMeasure
 	MsgSetAdmin           = types.MsgSetAdmin
-	MsgSetAllowed         = types.MsgSetAllowed
 	MsgCreateMeterAccount = types.MsgCreateMeterAccount
 )

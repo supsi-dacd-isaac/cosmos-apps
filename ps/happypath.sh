@@ -9,7 +9,6 @@ pscli query account $(pscli keys show $OLD -a) | jq ".value.coins[0]"
 # Admin register management
 pscli tx ps set-admin $NEW --from $NEW -y
 pscli query ps admin
-pscli tx ps tokens-minting 20 $(pscli keys show $OLD -a) --from $NEW -y
 
 # Allowed register management
 pscli tx ps set-allowed $NEW,$OLD --from $NEW -y
@@ -19,6 +18,10 @@ pscli query ps allowed
 pscli tx ps set-parameters 1 2 100 10 --from $NEW -y
 pscli query ps list-parameters
 
+# Tokens minting (performed by the administrator)
+pscli tx ps tokens-minting 20 $(pscli keys show $NEW -a) --from $NEW -y
+pscli tx ps tokens-minting 20 $(pscli keys show $OLD -a) --from $NEW -y
+
 # Measures management
 # 100 -> UNIX timestamp
 # 2 -> energy consumed  (Wh)
@@ -27,5 +30,7 @@ pscli tx ps set-measure 100 1 --from $NEW -y | jq ".txhash" | xargs $(sleep 6) p
 pscli query ps measure energy 100 $NEW
 
 # Create correspondences meter-account
-pscli tx ps create-meterAccount $NEW cosmos1px45r5y3wktz039n9jw9wqs3r94mjr8tez0wpp --from $NEW -y
+pscli tx ps create-meterAccount $NEW $(pscli keys show $NEW -a) --from $NEW -y
+pscli tx ps create-meterAccount $OLD $(pscli keys show $OLD -a) --from $NEW -y
 pscli query ps list-meterAccount
+

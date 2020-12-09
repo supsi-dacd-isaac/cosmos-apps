@@ -46,21 +46,6 @@ func (w Admin) String() string {
 	return strings.TrimSpace(fmt.Sprintf(`Id: %s Account: %s`, w.Id, w.Account))
 }
 
-// Allowed section
-type Allowed struct {
-	Allowed string         `json:"allowed"`
-	Account sdk.AccAddress `json:"account"`
-}
-
-func NewAllowed() Allowed {
-	return Allowed{}
-}
-
-// implement fmt.Stringer
-func (w Allowed) String() string {
-	return strings.TrimSpace(fmt.Sprintf(`Allowed: %s Account: %s`, w.Allowed, w.Account))
-}
-
 // Parameters section
 type Parameters struct {
 	Creator        sdk.AccAddress `json:"creator" yaml:"creator"`

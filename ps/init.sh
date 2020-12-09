@@ -3,7 +3,7 @@
 rm -rf ~/.psd
 rm -rf ~/.pscli
 
-psd init test --chain-id=encomchain
+psd init new --chain-id=encomchain
 
 pscli config output json
 pscli config indent true

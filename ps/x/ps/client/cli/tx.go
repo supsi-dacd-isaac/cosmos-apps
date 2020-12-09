@@ -65,7 +65,6 @@ func GetTxCmd(storeKey string, cdc *codec.Codec) *cobra.Command {
 	ecmTxCmd.AddCommand(flags.PostCommands(
 		GetCmdSetMeasure(cdc),
 		GetCmdSetAdmin(cdc),
-		GetCmdSetAllowed(cdc),
 		GetCmdSetParameters(cdc),
 		GetCmdTokenMinting(cdc),
 		GetCmdCreateMeterAccount(cdc),
@@ -92,8 +91,6 @@ func GetCmdSetMeasure(cdc *codec.Codec) *cobra.Command {
 				return errCoins
 			}
 
-			// todo HERE CHECK IF THE USER DOING THE TRANSACTION ON THE PROPER METER
-			//  Save a register meter_$HASHMAC = $ACCOUNT, that can be set/read only by the admin
 			macs, _ := psutils.GetMacAddr()
 			hashedMac := psutils.CalcSHA512Hash(macs[0])
 
@@ -101,9 +98,7 @@ func GetCmdSetMeasure(cdc *codec.Codec) *cobra.Command {
 			meterId := hashedMac
 			signal := "energy"
 
-			// Introdurre quest check, probabilmente il registro allowed non serve più!!
 			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/"+types.QueryListMeterAccount), nil)
-
 			if !CheckMeterAccount(cdc, res, cliCtx.GetFromAddress()) {
 				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! The account trying to perform the TX is not allowed to insert measures"})
 				return cliCtx.PrintOutput(string(ad))
@@ -180,36 +175,6 @@ func GetCmdTokenMinting(cdc *codec.Codec) *cobra.Command {
 			recipient, _ := sdk.AccAddressFromBech32(args[1])
 
 			msg := types.NewMsgTokensMinting(coins, recipient, cliCtx.GetFromAddress())
-			err := msg.ValidateBasic()
-			if err != nil {
-				return err
-			}
-
-			return utils.GenerateOrBroadcastMsgs(cliCtx, txBldr, []sdk.Msg{msg})
-		},
-	}
-}
-
-// GetCmdSetAllowed is the CLI command for sending a SetAllowed transaction
-func GetCmdSetAllowed(cdc *codec.Codec) *cobra.Command {
-	return &cobra.Command{
-		Use:   "set-allowed [allowed_string]",
-		Short: "set the allowed register",
-		Args:  cobra.ExactArgs(1),
-		RunE: func(cmd *cobra.Command, args []string) error {
-			cliCtx := context.NewCLIContext().WithCodec(cdc)
-			inBuf := bufio.NewReader(cmd.InOrStdin())
-			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-
-			// Check if the address performing the transaction is the administrator
-			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/admin/admin"), nil)
-			if !CheckAdmin(cdc, []byte(res), cliCtx.GetFromAddress()) {
-				ad, _ := json.Marshal(types.Error{"403", "ACCESS DENIED! The account trying to perform the TX is not the admin"})
-				return cliCtx.PrintOutput(string(ad))
-			}
-
-			// Launch the message
-			msg := types.NewMsgSetAllowed(args[0], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err

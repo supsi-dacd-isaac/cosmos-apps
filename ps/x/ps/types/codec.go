@@ -8,7 +8,6 @@ import (
 func RegisterCodec(cdc *codec.Codec) {
 	cdc.RegisterConcrete(MsgSetMeasure{}, "ps/SetMeasure", nil)
 	cdc.RegisterConcrete(MsgSetAdmin{}, "ps/SetAdmin", nil)
-	cdc.RegisterConcrete(MsgSetAllowed{}, "ps/SetAllowed", nil)
 	cdc.RegisterConcrete(MsgSetParameters{}, "ps/SetParameters", nil)
 	cdc.RegisterConcrete(MsgTokensMinting{}, "ps/TokenMinting", nil)
 	cdc.RegisterConcrete(MsgCreateMeterAccount{}, "ps/MsgCreateMeterAccount", nil)

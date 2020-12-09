@@ -16,8 +16,6 @@ func NewHandler(keeper Keeper) sdk.Handler {
 			return handleMsgSetAdmin(ctx, keeper, msg)
 		case types.MsgSetMeasure:
 			return handleMsgSetMeasure(ctx, keeper, msg)
-		case types.MsgSetAllowed:
-			return handleMsgSetAllowed(ctx, keeper, msg)
 		case types.MsgSetParameters:
 			return handleMsgSetParameters(ctx, keeper, msg)
 		case types.MsgTokensMinting:
@@ -49,12 +47,6 @@ func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure
 func handleMsgSetAdmin(ctx sdk.Context, keeper Keeper, msg types.MsgSetAdmin) (*sdk.Result, error) {
 
 	keeper.SetAdmin(ctx, msg)
-	return &sdk.Result{}, nil
-}
-
-// Handle a message to set the allowed register
-func handleMsgSetAllowed(ctx sdk.Context, keeper Keeper, msg types.MsgSetAllowed) (*sdk.Result, error) {
-	keeper.SetAllowed(ctx, msg)
 	return &sdk.Result{}, nil
 }
 
