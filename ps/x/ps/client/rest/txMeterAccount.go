@@ -1,6 +1,7 @@
 package rest
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/cosmos/cosmos-sdk/client/context"
@@ -12,10 +13,8 @@ import (
 
 type createMeterAccountRequest struct {
 	BaseReq rest.BaseReq `json:"base_req"`
-	Creator string       `json:"creator"`
 	Meter   string       `json:"meter"`
 	Account string       `json:"account"`
-	Admin   string       `json:"admin"`
 }
 
 func createMeterAccountHandler(cliCtx context.CLIContext) http.HandlerFunc {
@@ -29,12 +28,26 @@ func createMeterAccountHandler(cliCtx context.CLIContext) http.HandlerFunc {
 		if !baseReq.ValidateBasic(w) {
 			return
 		}
+
 		account, err := sdk.AccAddressFromBech32(req.Account)
-		admin, err := sdk.AccAddressFromBech32(req.Admin)
 		if err != nil {
 			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
 			return
 		}
+
+		admin, err := sdk.AccAddressFromBech32(req.BaseReq.From)
+		if err != nil {
+			rest.WriteErrorResponse(w, http.StatusBadRequest, err.Error())
+			return
+		}
+
+		// Admin checking
+		res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/admin/admin"), nil)
+		if !CheckAdmin([]byte(res), req.BaseReq.From) {
+			rest.WriteErrorResponse(w, http.StatusForbidden, "Forbidden! The node trying to perform the transaction is not the admin")
+			return
+		}
+
 		msg := types.NewMsgCreateMeterAccount(req.Meter, account, admin)
 		utils.WriteGenerateStdTxResponse(w, cliCtx, baseReq, []sdk.Msg{msg})
 	}
