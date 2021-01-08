@@ -10,18 +10,16 @@ type MsgSetMeasure struct {
 	Timestamp string         `json:"timestamp"`
 	MeterId   string         `json:"meterId"`
 	Value     string         `json:"value"`
-	Cost      sdk.Coins      `json:"cost"`
 	Account   sdk.AccAddress `json:"account"`
 }
 
 // NewMsgNewMeasure is a constructor function for MsgNewMeasure
-func NewMsgSetMeasure(signal string, timestamp string, meterId string, value string, cost sdk.Coins, account sdk.AccAddress) MsgSetMeasure {
+func NewMsgSetMeasure(signal string, timestamp string, meterId string, value string, account sdk.AccAddress) MsgSetMeasure {
 	return MsgSetMeasure{
 		Signal:    signal,
 		Timestamp: timestamp,
 		MeterId:   meterId,
 		Value:     value,
-		Cost:      cost,
 		Account:   account,
 	}
 }

@@ -34,3 +34,5 @@ pscli tx ps create-meterAccount $NEW $(pscli keys show $NEW -a) --from $NEW -y
 pscli tx ps create-meterAccount $OLD $(pscli keys show $OLD -a) --from $NEW -y
 pscli query ps list-meterAccount
 
+
+

@@ -13,6 +13,7 @@ const (
 
 	QueryListParameters   = "list-parameters"
 	QueryListMeterAccount = "list-meterAccount"
+	QueryGetMeterId       = "get-meterId"
 )
 
 // NewQuerier is the module level router for state queries
@@ -27,6 +28,8 @@ func NewQuerier(keeper Keeper) sdk.Querier {
 			return queryListParameters(ctx, keeper)
 		case QueryListMeterAccount:
 			return queryListMeterAccount(ctx, keeper)
+		case QueryGetMeterId:
+			return queryGetMeterId(ctx, keeper)
 		default:
 			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, "unknown query endpoint")
 		}

@@ -39,9 +39,7 @@ func GetCmdMeasure(queryRoute string, cdc *codec.Codec) *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 
-			// todo Handle the id as follows
-			// 	ADMIN -> args[2] (id) is used for the measure
-			// 	NOT ADMIN -> args[2] (id) is not used, hash(MAC) is calculated
+			// Define the measure identifier
 			idMeasure := (fmt.Sprintf("%s_%s_%s", args[0], args[1], args[2]))
 
 			res, _, err := cliCtx.QueryWithData(fmt.Sprintf("custom/%s/measure/%s", queryRoute, idMeasure), nil)

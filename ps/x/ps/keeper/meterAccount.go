@@ -1,6 +1,7 @@
 package keeper
 
 import (
+	"fmt"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
@@ -40,6 +41,23 @@ func queryListMeterAccount(ctx sdk.Context, k Keeper) ([]byte, error) {
 	}
 	res := codec.MustMarshalJSONIndent(k.cdc, meterAccountList)
 	return res, nil
+}
+
+func queryGetMeterId(ctx sdk.Context, k Keeper) ([]byte, error) {
+	store := ctx.KVStore(k.storeKey)
+
+	macs, _ := psutils.GetMacAddr()
+	hashedMac := psutils.CalcSHA512Hash(macs[0])
+
+	iterator := sdk.KVStorePrefixIterator(store, []byte(types.MeterAccountPrefix))
+	for ; iterator.Valid(); iterator.Next() {
+		var meterAccount types.MeterAccount
+		k.cdc.MustUnmarshalBinaryLengthPrefixed(store.Get(iterator.Key()), &meterAccount)
+		if meterAccount.Meter == hashedMac {
+			return []byte(meterAccount.Meter), nil
+		}
+	}
+	return []byte(""), fmt.Errorf("Unable to find the meter Id")
 }
 
 // checkMeterAccount a correspondence meter-account

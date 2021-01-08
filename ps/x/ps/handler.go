@@ -6,6 +6,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/types"
 	"github.com/supsi-dacd-isaac/cosmos-apps/ps/x/ps/utils"
+	"strconv"
 )
 
 // NewHandler returns a handler for "ecm" type messages.
@@ -32,11 +33,26 @@ func NewHandler(keeper Keeper) sdk.Handler {
 func handleMsgSetMeasure(ctx sdk.Context, keeper Keeper, msg types.MsgSetMeasure) (*sdk.Result, error) {
 	// Update the cost according to the conversion factor
 	pars := keeper.GetParameters(ctx)
-	msg.Cost = utils.MulCoins(msg.Cost, pars.ConsConvFactor)
 
-	_, err := keeper.CoinKeeper.SubtractCoins(ctx, msg.Account, msg.Cost)
-	if err != nil {
-		return nil, nil
+	// If signal is related to a consumed/produced energy then tokens are burnt/minted
+	if msg.Signal == "E_cons" {
+		val, _ := strconv.ParseFloat(msg.Value, 64)
+		strCoins := fmt.Sprintf("%d%s", int(val), types.TokenName)
+		coins, _ := sdk.ParseCoins(strCoins)
+		coins = utils.MulCoins(coins, pars.ConsConvFactor)
+		_, err := keeper.CoinKeeper.SubtractCoins(ctx, msg.Account, coins)
+		if err != nil {
+			return nil, nil
+		}
+	} else if msg.Signal == "E_prod" {
+		val, _ := strconv.ParseFloat(msg.Value, 64)
+		strCoins := fmt.Sprintf("%d%s", int(val), types.TokenName)
+		coins, _ := sdk.ParseCoins(strCoins)
+		coins = utils.MulCoins(coins, pars.ProdConvFactor)
+		_, err := keeper.CoinKeeper.AddCoins(ctx, msg.Account, coins)
+		if err != nil {
+			return nil, nil
+		}
 	}
 
 	keeper.SetMeasure(ctx, msg)

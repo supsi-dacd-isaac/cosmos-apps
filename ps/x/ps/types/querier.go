@@ -30,7 +30,7 @@ const (
 	QueryListParameters = "list-parameters"
 )
 
-// QueryResAllowed Queries
+// QueryResParameters Queries
 type QueryResParameters []string
 
 // implement fmt.Stringer
@@ -40,4 +40,16 @@ func (n QueryResParameters) String() string {
 
 const (
 	QueryListMeterAccount = "list-meterAccount"
+)
+
+// QueryResGetMeterId Queries
+type QueryResGetMeterId []string
+
+// implement fmt.Stringer
+func (n QueryResGetMeterId) String() string {
+	return strings.Join(n[:], "\n")
+}
+
+const (
+	QueryGetMeterId = "get-meterId"
 )

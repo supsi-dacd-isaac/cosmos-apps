@@ -44,3 +44,22 @@ func MulCoins(coins sdk.Coins, factorStr string) sdk.Coins {
 
 	return res
 }
+
+//func CalcTokens(signal string, value float64, marketPars types.Parameters) sdk.Coins {
+//
+//	//Default case (data saving not related to tokens minting/burning (i.e. not an energy)
+//	strCoins := fmt.Sprintf("%d%s", 0, types.TokenName)
+//
+//	if signal == "E_cons"{
+//		// Energy consumption -> tokens burning
+//		conv, _ := strconv.ParseFloat(marketPars.ConsConvFactor, 64)
+//		strCoins = fmt.Sprintf("%d%s", int(value*conv), types.TokenName)
+//	} else if signal == "E_prod" {
+//		// Energy consumption -> tokens minting
+//		conv, _ := strconv.ParseFloat(marketPars.ProdConvFactor, 64)
+//		strCoins = fmt.Sprintf("%d%s", int(value*conv), types.TokenName)
+//	}
+//
+//	coins, _ := sdk.ParseCoins(strCoins)
+//	return coins
+//}

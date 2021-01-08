@@ -78,25 +78,18 @@ func GetCmdSetMeasure(cdc *codec.Codec) *cobra.Command {
 	return &cobra.Command{
 		Use:   "set-measure [timestamp] [value]",
 		Short: "set the value associated with a timestamp",
-		Args:  cobra.ExactArgs(2),
+		Args:  cobra.ExactArgs(3),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			cliCtx := context.NewCLIContext().WithCodec(cdc)
 			inBuf := bufio.NewReader(cmd.InOrStdin())
 			txBldr := auth.NewTxBuilderFromCLI(inBuf).WithTxEncoder(utils.GetTxEncoder(cdc))
-
-			val, _ := strconv.Atoi(args[1])
-			strCoins := fmt.Sprintf("%d%s", val, types.TokenName)
-			coins, errCoins := sdk.ParseCoins(strCoins)
-			if errCoins != nil {
-				return errCoins
-			}
 
 			macs, _ := psutils.GetMacAddr()
 			hashedMac := psutils.CalcSHA512Hash(macs[0])
 
 			// Define meter identifier and signal description
 			meterId := hashedMac
-			signal := "energy"
+			signal := args[2]
 
 			res, _, _ := cliCtx.QueryWithData(fmt.Sprintf("custom/ps/"+types.QueryListMeterAccount), nil)
 			if !CheckMeterAccount(cdc, res, cliCtx.GetFromAddress()) {
@@ -105,7 +98,7 @@ func GetCmdSetMeasure(cdc *codec.Codec) *cobra.Command {
 			}
 
 			// Launch the message
-			msg := types.NewMsgSetMeasure(signal, args[0], meterId, args[1], coins, cliCtx.GetFromAddress())
+			msg := types.NewMsgSetMeasure(signal, args[0], meterId, args[1], cliCtx.GetFromAddress())
 			err := msg.ValidateBasic()
 			if err != nil {
 				return err

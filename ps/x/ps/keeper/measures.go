@@ -26,7 +26,7 @@ func (k Keeper) GetMeasure(ctx sdk.Context, measureId string) types.Measure {
 // SetName - sets the value string that a name resolves to
 func (k Keeper) SetMeasure(ctx sdk.Context, msg types.MsgSetMeasure) {
 	// Define the measure key
-	measureKey := fmt.Sprintf("energy_%s_%s", msg.Timestamp, msg.MeterId)
+	measureKey := fmt.Sprintf("%s_%s_%s", msg.Signal, msg.Timestamp, msg.MeterId)
 
 	// Get the (eventual) key in the KVStore
 	measure := k.GetMeasure(ctx, measureKey)
@@ -36,7 +36,6 @@ func (k Keeper) SetMeasure(ctx sdk.Context, msg types.MsgSetMeasure) {
 	measure.Timestamp = msg.Timestamp
 	measure.Value = msg.Value
 	measure.MeterId = msg.MeterId
-	measure.Cost = msg.Cost
 	measure.Account = msg.Account
 
 	// Set the updated dataset
