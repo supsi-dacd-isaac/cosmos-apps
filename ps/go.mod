@@ -14,6 +14,7 @@ require (
 	github.com/spf13/viper v1.7.0
 	github.com/syndtr/goleveldb v1.0.1-0.20190923125748-758128399b1d
 	github.com/tendermint/go-amino v0.15.1
+	github.com/tendermint/iavl v0.14.2 // indirect
 	github.com/tendermint/tendermint v0.33.6
 	github.com/tendermint/tm-db v0.5.1
 	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2 // indirect
