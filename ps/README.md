@@ -1,6 +1,6 @@
 # ps (Pre-paid Scenario)
 
-N.B. When compiling on ARM architecure, be sure that iavl>=0.14.2 is required. 
+N.B. When compiling on ARM architecture, iavl>=0.14.2 is required. 
      In case, upgrade the module as described here: https://golang.cafe/blog/upgrade-dependencies-golang.html.
 
 <pre>
