@@ -13,10 +13,12 @@ func RegisterRoutes(cliCtx context.CLIContext, r *mux.Router) {
 	r.HandleFunc("/ps/meterAccount", listMeterAccountHandler(cliCtx, "ps")).Methods("GET")
 	r.HandleFunc("/ps/parameters", listParametersHandler(cliCtx, "ps")).Methods("GET")
 	r.HandleFunc("/ps/getMeasure", getMeasureHandler(cliCtx, "ps")).Methods("GET")
+	r.HandleFunc("/ps/getAdmin", getAdminHandler(cliCtx, "ps")).Methods("GET")
 
 	r.HandleFunc("/ps/meterAccount", createMeterAccountHandler(cliCtx)).Methods("POST")
 	r.HandleFunc("/ps/parameters", createParametersHandler(cliCtx)).Methods("POST")
-	r.HandleFunc("/ps/setMeasure", setMeasure(cliCtx)).Methods("POST")
+	r.HandleFunc("/ps/setMeasure", setMeasureHandler(cliCtx)).Methods("POST")
+	r.HandleFunc("/ps/setAdmin", setAdminHandler(cliCtx)).Methods("POST")
 }
 
 // Utilities functions used the REST handlers

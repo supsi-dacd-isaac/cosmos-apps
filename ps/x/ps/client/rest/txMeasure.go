@@ -17,7 +17,7 @@ type setMeasureRequest struct {
 	Value     string       `json:"value"`
 }
 
-func setMeasure(cliCtx context.CLIContext) http.HandlerFunc {
+func setMeasureHandler(cliCtx context.CLIContext) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var req setMeasureRequest
 		if !rest.ReadRESTReq(w, r, cliCtx.Codec, &req) {
