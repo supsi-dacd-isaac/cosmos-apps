@@ -10,11 +10,7 @@ Each node corresponds to a prosumer and is able to gather data from the related 
 
 ## Available applications:
 
-## Prepaid-scenario (_ps_):
-_ps_ application is able to save in the sidechain electrical data measured by smart meteres and to tokenize the energy measurements
-using the official libraries of [Cosmos-SDK](https://github.com/cosmos/cosmos-sdk).
-According to energy produced or consumed by a meter in a defined period, the corresponding amount of tokens of the related account are minted or burnt.
-To have _PS_ properly functioning, periodically the community administrator saves on the chain the settings needed for the energy tokenization. 
+* [Prepaid-scenario](https://github.com/supsi-dacd-isaac/cosmos-apps/blob/master/ps/README.md)
 
 ## Acknowledgements
 The authors would like to thank the Swiss Federal Office of Energy (SFOE) and the Swiss Competence Center for Energy Research - Future Swiss Electrical Infrastructure (SCCER-FURIES), for their financial and technical support to this research work.
