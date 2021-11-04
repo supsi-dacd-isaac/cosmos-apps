@@ -1,0 +1,72 @@
+syntax = "proto3";
+package supsidacdisaac.tsdb.tsdb;
+
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "tsdb/timeseries.proto";
+import "tsdb/measure.proto";
+// this line is used by starport scaffolding # 1
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/tsdb/x/tsdb/types";
+
+// Query defines the gRPC querier service.
+service Query {
+    // Queries a timeseries by id.
+	rpc Timeseries(QueryGetTimeseriesRequest) returns (QueryGetTimeseriesResponse) {
+		option (google.api.http).get = "/supsi-dacd-isaac/tsdb/tsdb/timeseries/{id}";
+	}
+
+	// Queries a list of timeseries items.
+	rpc TimeseriesAll(QueryAllTimeseriesRequest) returns (QueryAllTimeseriesResponse) {
+		option (google.api.http).get = "/supsi-dacd-isaac/tsdb/tsdb/timeseries";
+	}
+
+// Queries a measure by id.
+	rpc Measure(QueryGetMeasureRequest) returns (QueryGetMeasureResponse) {
+		option (google.api.http).get = "/supsi-dacd-isaac/tsdb/tsdb/measure/{id}";
+	}
+
+	// Queries a list of measure items.
+	rpc MeasureAll(QueryAllMeasureRequest) returns (QueryAllMeasureResponse) {
+		option (google.api.http).get = "/supsi-dacd-isaac/tsdb/tsdb/measure";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+message QueryGetTimeseriesRequest {
+	uint64 id = 1;
+}
+
+message QueryGetTimeseriesResponse {
+	Timeseries Timeseries = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllTimeseriesRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllTimeseriesResponse {
+	repeated Timeseries Timeseries = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetMeasureRequest {
+	uint64 id = 1;
+}
+
+message QueryGetMeasureResponse {
+	Measure Measure = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllMeasureRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllMeasureResponse {
+	repeated Measure Measure = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// this line is used by starport scaffolding # 3

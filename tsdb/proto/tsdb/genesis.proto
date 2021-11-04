@@ -1,0 +1,18 @@
+syntax = "proto3";
+package supsidacdisaac.tsdb.tsdb;
+
+import "tsdb/timeseries.proto";
+import "tsdb/measure.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/tsdb/x/tsdb/types";
+
+// GenesisState defines the tsdb module's genesis state.
+message GenesisState {
+    repeated Timeseries timeseriesList = 1 [(gogoproto.nullable) = false];
+  uint64 timeseriesCount = 2;
+  repeated Measure measureList = 3 [(gogoproto.nullable) = false];
+  uint64 measureCount = 4;
+  // this line is used by starport scaffolding # genesis/proto/state
+}

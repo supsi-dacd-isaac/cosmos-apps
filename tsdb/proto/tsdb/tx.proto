@@ -1,0 +1,75 @@
+syntax = "proto3";
+package supsidacdisaac.tsdb.tsdb;
+
+import "tsdb/timeseries.proto";
+import "tsdb/measure.proto";
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/tsdb/x/tsdb/types";
+
+// Msg defines the Msg service.
+service Msg {
+    rpc CreateTimeseries(MsgCreateTimeseries) returns (MsgCreateTimeseriesResponse);
+  rpc UpdateTimeseries(MsgUpdateTimeseries) returns (MsgUpdateTimeseriesResponse);
+  rpc DeleteTimeseries(MsgDeleteTimeseries) returns (MsgDeleteTimeseriesResponse);
+rpc CreateMeasure(MsgCreateMeasure) returns (MsgCreateMeasureResponse);
+  rpc UpdateMeasure(MsgUpdateMeasure) returns (MsgUpdateMeasureResponse);
+  rpc DeleteMeasure(MsgDeleteMeasure) returns (MsgDeleteMeasureResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateTimeseries {
+  string creator = 1;
+  string location = 2;
+  string signal = 3;
+}
+
+message MsgCreateTimeseriesResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateTimeseries {
+  string creator = 1;
+  uint64 id = 2;
+  string location = 3;
+  string signal = 4;
+}
+
+message MsgUpdateTimeseriesResponse {}
+
+message MsgDeleteTimeseries {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteTimeseriesResponse {}
+
+message MsgCreateMeasure {
+  string creator = 1;
+  string timeseriesID = 2;
+  string ts = 3;
+  string value = 4;
+}
+
+message MsgCreateMeasureResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateMeasure {
+  string creator = 1;
+  uint64 id = 2;
+  string timeseriesID = 3;
+  string ts = 4;
+  string value = 5;
+}
+
+message MsgUpdateMeasureResponse {}
+
+message MsgDeleteMeasure {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteMeasureResponse {}
+
+// this line is used by starport scaffolding # proto/tx/message

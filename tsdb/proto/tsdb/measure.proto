@@ -1,0 +1,15 @@
+syntax = "proto3";
+package supsidacdisaac.tsdb.tsdb;
+
+option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/tsdb/x/tsdb/types";
+
+import "gogoproto/gogo.proto";
+
+
+message Measure {
+  uint64 id = 1;
+  string timeseriesID = 2; 
+  string ts = 3; 
+  string value = 4; 
+  string creator = 5;
+}
