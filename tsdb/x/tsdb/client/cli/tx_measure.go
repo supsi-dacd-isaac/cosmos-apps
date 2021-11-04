@@ -32,16 +32,16 @@ func CmdCreateMeasure() *cobra.Command {
 				return err
 			}
 
-			strUrl := "http://localhost:1317/supsi-dacd-isaac/tsdb/tsdb/timeseries"
-			//strUrl := "supsi-dacd-isaac/tsdb/tsdb/timeseries"
-			res, _ := http.Get(strUrl)
-			body, err := ioutil.ReadAll(res.Body)
-			if err != nil {
-				log.Fatalln(err)
-			}
-			//Convert the body to type string
-			sb := string(body)
-			log.Printf(sb)
+			// Example of data querying
+			//strUrl := "http://localhost:1317/supsi-dacd-isaac/tsdb/tsdb/timeseries"
+			//res, _ := http.Get(strUrl)
+			//body, err := ioutil.ReadAll(res.Body)
+			//if err != nil {
+			//	log.Fatalln(err)
+			//}
+			////Convert the body to type string
+			//sb := string(body)
+			//log.Printf(sb)
 
 			msg := types.NewMsgCreateMeasure(clientCtx.GetFromAddress().String(), argTimeseriesID, argTs, argValue)
 			if err := msg.ValidateBasic(); err != nil {
