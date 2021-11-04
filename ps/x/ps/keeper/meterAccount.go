@@ -43,6 +43,20 @@ func queryListMeterAccount(ctx sdk.Context, k Keeper) ([]byte, error) {
 	return res, nil
 }
 
+func queryListMeters(ctx sdk.Context, k Keeper) ([]byte, error) {
+	var metersList []string
+	store := ctx.KVStore(k.storeKey)
+
+	iterator := sdk.KVStorePrefixIterator(store, []byte(types.MeterAccountPrefix))
+	for ; iterator.Valid(); iterator.Next() {
+		var meterAccount types.MeterAccount
+		k.cdc.MustUnmarshalBinaryLengthPrefixed(store.Get(iterator.Key()), &meterAccount)
+		metersList = append(metersList, meterAccount.Meter)
+	}
+	res := codec.MustMarshalJSONIndent(k.cdc, metersList)
+	return res, nil
+}
+
 func queryGetMeterId(ctx sdk.Context, k Keeper) ([]byte, error) {
 	store := ctx.KVStore(k.storeKey)
 
