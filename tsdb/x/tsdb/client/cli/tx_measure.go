@@ -1,12 +1,6 @@
 package cli
 
 import (
-	"io/ioutil"
-	"log"
-	"net/http"
-
-	//"io/ioutil"
-	//"log"
 	"strconv"
 
 	"github.com/spf13/cobra"
