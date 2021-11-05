@@ -1,0 +1,13 @@
+syntax = "proto3";
+package supsidacdisaac.pm.pm;
+
+option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/pm/x/pm/types";
+
+import "gogoproto/gogo.proto";
+
+
+message Dso {
+  string index = 1; 
+  string address = 2; 
+  string creator = 3;
+}
