@@ -21,8 +21,8 @@ func CmdCreateLem() *cobra.Command {
 
 			// Get value arguments
 			argIndexEnd := args[1]
-			argParams := args[2:4]
-			argPlayers := args[4:len(args)]
+			argParams := args[2:8]
+			argPlayers := args[8:len(args)]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -65,8 +65,8 @@ func CmdUpdateLem() *cobra.Command {
 
 			// Get value arguments
 			argIndexEnd := args[1]
-			argParams := args[2:4]
-			argPlayers := args[4:len(args)]
+			argParams := args[2:8]
+			argPlayers := args[8:len(args)]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
