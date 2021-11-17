@@ -1,0 +1,14 @@
+syntax = "proto3";
+package supsidacdisaac.pm.pm;
+
+option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/pm/x/pm/types";
+
+
+
+message Sla {
+  string index = 1; 
+  int32 start = 2; 
+  int32 end = 3; 
+  string creator = 4;
+}
+

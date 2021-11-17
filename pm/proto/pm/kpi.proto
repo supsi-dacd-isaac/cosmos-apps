@@ -1,0 +1,17 @@
+syntax = "proto3";
+package supsidacdisaac.pm.pm;
+
+option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/pm/x/pm/types";
+
+
+
+message Kpi {
+  string index = 1; 
+  string sla = 2; 
+  string rule = 3; 
+  string limit = 4; 
+  string mu = 5; 
+  int32 penalty = 6; 
+  string creator = 7;
+}
+

@@ -1,0 +1,17 @@
+syntax = "proto3";
+package supsidacdisaac.pm.pm;
+
+option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/pm/x/pm/types";
+
+
+
+message LemMeasure {
+  string index = 1; 
+  string player = 2; 
+  string signal = 3; 
+  int32 timestamp = 4; 
+  string value = 5; 
+  string mu = 6; 
+  string creator = 7;
+}
+
