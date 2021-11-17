@@ -19,7 +19,7 @@ func (k msgServer) CreateDso(goCtx context.Context, msg *types.MsgCreateDso) (*t
 
 	var dso = types.Dso{
 		Creator: msg.Creator,
-		Index:   msg.Index,
+		Idx:     msg.Idx,
 		Address: msg.Address,
 	}
 
@@ -46,7 +46,7 @@ func (k msgServer) UpdateDso(goCtx context.Context, msg *types.MsgUpdateDso) (*t
 
 	var dso = types.Dso{
 		Creator: msg.Creator,
-		Index:   msg.Index,
+		Idx:     msg.Idx,
 		Address: msg.Address,
 	}
 

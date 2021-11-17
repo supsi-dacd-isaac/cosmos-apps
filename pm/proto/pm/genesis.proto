@@ -2,9 +2,13 @@ syntax = "proto3";
 package supsidacdisaac.pm.pm;
 
 import "pm/dso.proto";
-import "pm/player.proto";
 import "pm/aggregator.proto";
+import "pm/player.proto";
 import "pm/lem.proto";
+import "pm/lem_measure.proto";
+import "pm/sla.proto";
+import "pm/kpi.proto";
+import "pm/kpi_measure.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 import "gogoproto/gogo.proto";
 
@@ -13,8 +17,12 @@ option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/pm/x/pm/types";
 // GenesisState defines the pm module's genesis state.
 message GenesisState {
     Dso dso = 1;
-  repeated Player playerList = 2 [(gogoproto.nullable) = false];
-  Aggregator aggregator = 3;
+  Aggregator aggregator = 2;
+  repeated Player playerList = 3 [(gogoproto.nullable) = false];
   repeated Lem lemList = 4 [(gogoproto.nullable) = false];
+  repeated LemMeasure lemMeasureList = 5 [(gogoproto.nullable) = false];
+  repeated Sla slaList = 6 [(gogoproto.nullable) = false];
+  repeated Kpi kpiList = 7 [(gogoproto.nullable) = false];
+  repeated KpiMeasure kpiMeasureList = 8 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

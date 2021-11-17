@@ -1,23 +1,33 @@
 /* eslint-disable */
-import { Writer, Reader } from 'protobufjs/minimal';
-export const protobufPackage = 'supsidacdisaac.pm.pm';
-const baseLem = { index: '', indexEnd: '', params: '', players: '', creator: '' };
+import { Writer, Reader } from "protobufjs/minimal";
+export const protobufPackage = "supsidacdisaac.pm.pm";
+const baseLem = {
+    index: "",
+    start: 0,
+    end: 0,
+    params: "",
+    players: "",
+    creator: "",
+};
 export const Lem = {
     encode(message, writer = Writer.create()) {
-        if (message.index !== '') {
+        if (message.index !== "") {
             writer.uint32(10).string(message.index);
         }
-        if (message.indexEnd !== '') {
-            writer.uint32(18).string(message.indexEnd);
+        if (message.start !== 0) {
+            writer.uint32(16).int32(message.start);
+        }
+        if (message.end !== 0) {
+            writer.uint32(24).int32(message.end);
         }
         for (const v of message.params) {
-            writer.uint32(26).string(v);
-        }
-        for (const v of message.players) {
             writer.uint32(34).string(v);
         }
-        if (message.creator !== '') {
-            writer.uint32(42).string(message.creator);
+        for (const v of message.players) {
+            writer.uint32(42).string(v);
+        }
+        if (message.creator !== "") {
+            writer.uint32(50).string(message.creator);
         }
         return writer;
     },
@@ -34,15 +44,18 @@ export const Lem = {
                     message.index = reader.string();
                     break;
                 case 2:
-                    message.indexEnd = reader.string();
+                    message.start = reader.int32();
                     break;
                 case 3:
-                    message.params.push(reader.string());
+                    message.end = reader.int32();
                     break;
                 case 4:
-                    message.players.push(reader.string());
+                    message.params.push(reader.string());
                     break;
                 case 5:
+                    message.players.push(reader.string());
+                    break;
+                case 6:
                     message.creator = reader.string();
                     break;
                 default:
@@ -60,13 +73,19 @@ export const Lem = {
             message.index = String(object.index);
         }
         else {
-            message.index = '';
+            message.index = "";
         }
-        if (object.indexEnd !== undefined && object.indexEnd !== null) {
-            message.indexEnd = String(object.indexEnd);
+        if (object.start !== undefined && object.start !== null) {
+            message.start = Number(object.start);
         }
         else {
-            message.indexEnd = '';
+            message.start = 0;
+        }
+        if (object.end !== undefined && object.end !== null) {
+            message.end = Number(object.end);
+        }
+        else {
+            message.end = 0;
         }
         if (object.params !== undefined && object.params !== null) {
             for (const e of object.params) {
@@ -82,14 +101,15 @@ export const Lem = {
             message.creator = String(object.creator);
         }
         else {
-            message.creator = '';
+            message.creator = "";
         }
         return message;
     },
     toJSON(message) {
         const obj = {};
         message.index !== undefined && (obj.index = message.index);
-        message.indexEnd !== undefined && (obj.indexEnd = message.indexEnd);
+        message.start !== undefined && (obj.start = message.start);
+        message.end !== undefined && (obj.end = message.end);
         if (message.params) {
             obj.params = message.params.map((e) => e);
         }
@@ -113,13 +133,19 @@ export const Lem = {
             message.index = object.index;
         }
         else {
-            message.index = '';
+            message.index = "";
         }
-        if (object.indexEnd !== undefined && object.indexEnd !== null) {
-            message.indexEnd = object.indexEnd;
+        if (object.start !== undefined && object.start !== null) {
+            message.start = object.start;
         }
         else {
-            message.indexEnd = '';
+            message.start = 0;
+        }
+        if (object.end !== undefined && object.end !== null) {
+            message.end = object.end;
+        }
+        else {
+            message.end = 0;
         }
         if (object.params !== undefined && object.params !== null) {
             for (const e of object.params) {
@@ -135,8 +161,8 @@ export const Lem = {
             message.creator = object.creator;
         }
         else {
-            message.creator = '';
+            message.creator = "";
         }
         return message;
-    }
+    },
 };

@@ -7,10 +7,10 @@ import (
 
 var _ sdk.Msg = &MsgCreateDso{}
 
-func NewMsgCreateDso(creator string, index string, address string) *MsgCreateDso {
+func NewMsgCreateDso(creator string, idx string, address string) *MsgCreateDso {
 	return &MsgCreateDso{
 		Creator: creator,
-		Index:   index,
+		Idx:     idx,
 		Address: address,
 	}
 }
@@ -46,10 +46,10 @@ func (msg *MsgCreateDso) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateDso{}
 
-func NewMsgUpdateDso(creator string, index string, address string) *MsgUpdateDso {
+func NewMsgUpdateDso(creator string, idx string, address string) *MsgUpdateDso {
 	return &MsgUpdateDso{
 		Creator: creator,
-		Index:   index,
+		Idx:     idx,
 		Address: address,
 	}
 }

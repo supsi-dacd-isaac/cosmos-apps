@@ -23,6 +23,7 @@ func (k msgServer) CreatePlayer(goCtx context.Context, msg *types.MsgCreatePlaye
 	var player = types.Player{
 		Creator: msg.Creator,
 		Index:   msg.Index,
+		Idx:     msg.Idx,
 		Address: msg.Address,
 		Role:    msg.Role,
 	}
@@ -54,6 +55,7 @@ func (k msgServer) UpdatePlayer(goCtx context.Context, msg *types.MsgUpdatePlaye
 	var player = types.Player{
 		Creator: msg.Creator,
 		Index:   msg.Index,
+		Idx:     msg.Idx,
 		Address: msg.Address,
 		Role:    msg.Role,
 	}

@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -12,31 +11,27 @@ import (
 
 func CmdCreatePlayer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-player [index] [address] [role]",
+		Use:   "create-player [index] [idx] [address] [role]",
 		Short: "Create a new player",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexIndex := args[0]
 
 			// Get value arguments
-			argAddress := args[1]
-			argRole := args[2]
+			argIdx := args[1]
+			argAddress := args[2]
+			argRole := args[3]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			// Check if the node performing the transaction is the DSO
-			if isDSO(clientCtx) == false {
-				fmt.Println("Node ", clientCtx.GetFromAddress().String(), " not allowed to create a new player")
-				return nil
-			}
-
 			msg := types.NewMsgCreatePlayer(
 				clientCtx.GetFromAddress().String(),
 				indexIndex,
+				argIdx,
 				argAddress,
 				argRole,
 			)
@@ -54,31 +49,27 @@ func CmdCreatePlayer() *cobra.Command {
 
 func CmdUpdatePlayer() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-player [index] [address] [role]",
+		Use:   "update-player [index] [idx] [address] [role]",
 		Short: "Update a player",
-		Args:  cobra.ExactArgs(3),
+		Args:  cobra.ExactArgs(4),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			// Get indexes
 			indexIndex := args[0]
 
 			// Get value arguments
-			argAddress := args[1]
-			argRole := args[2]
+			argIdx := args[1]
+			argAddress := args[2]
+			argRole := args[3]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
 			}
 
-			// Check if the node performing the transaction is the DSO
-			if isDSO(clientCtx) == false {
-				fmt.Println("Node ", clientCtx.GetFromAddress().String(), " not allowed to update a player")
-				return nil
-			}
-
 			msg := types.NewMsgUpdatePlayer(
 				clientCtx.GetFromAddress().String(),
 				indexIndex,
+				argIdx,
 				argAddress,
 				argRole,
 			)
@@ -105,12 +96,6 @@ func CmdDeletePlayer() *cobra.Command {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
-			}
-
-			// Check if the node performing the transaction is the DSO
-			if isDSO(clientCtx) == false {
-				fmt.Println("Node ", clientCtx.GetFromAddress().String(), " not allowed to delete a player")
-				return nil
 			}
 
 			msg := types.NewMsgDeletePlayer(

@@ -12514,7 +12514,7 @@ paths:
               Aggregator:
                 type: object
                 properties:
-                  index:
+                  idx:
                     type: string
                   address:
                     type: string
@@ -12553,7 +12553,7 @@ paths:
               Dso:
                 type: object
                 properties:
-                  index:
+                  idx:
                     type: string
                   address:
                     type: string
@@ -12579,6 +12579,374 @@ paths:
                   additionalProperties: {}
       tags:
         - Query
+  /supsi-dacd-isaac/pm/pm/kpi:
+    get:
+      summary: Queries a list of kpi items.
+      operationId: SupsidacdisaacPmPmKpiAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              kpi:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    sla:
+                      type: string
+                    rule:
+                      type: string
+                    limit:
+                      type: string
+                    mu:
+                      type: string
+                    penalty:
+                      type: integer
+                      format: int32
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  nextKey:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.countTotal
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/supsi-dacd-isaac/pm/pm/kpi/{index}':
+    get:
+      summary: Queries a kpi by index.
+      operationId: SupsidacdisaacPmPmKpi
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              kpi:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  sla:
+                    type: string
+                  rule:
+                    type: string
+                  limit:
+                    type: string
+                  mu:
+                    type: string
+                  penalty:
+                    type: integer
+                    format: int32
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /supsi-dacd-isaac/pm/pm/kpiMeasure:
+    get:
+      summary: Queries a list of kpiMeasure items.
+      operationId: SupsidacdisaacPmPmKpiMeasureAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              kpiMeasure:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    kpi:
+                      type: string
+                    player:
+                      type: string
+                    timestamp:
+                      type: integer
+                      format: int32
+                    value:
+                      type: string
+                    mu:
+                      type: string
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  nextKey:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.countTotal
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/supsi-dacd-isaac/pm/pm/kpiMeasure/{index}':
+    get:
+      summary: Queries a kpiMeasure by index.
+      operationId: SupsidacdisaacPmPmKpiMeasure
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              kpiMeasure:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  kpi:
+                    type: string
+                  player:
+                    type: string
+                  timestamp:
+                    type: integer
+                    format: int32
+                  value:
+                    type: string
+                  mu:
+                    type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
   /supsi-dacd-isaac/pm/pm/lem:
     get:
       summary: Queries a list of lem items.
@@ -12596,8 +12964,12 @@ paths:
                   properties:
                     index:
                       type: string
-                    indexEnd:
-                      type: string
+                    start:
+                      type: integer
+                      format: int32
+                    end:
+                      type: integer
+                      format: int32
                     params:
                       type: array
                       items:
@@ -12724,8 +13096,12 @@ paths:
                 properties:
                   index:
                     type: string
-                  indexEnd:
-                    type: string
+                  start:
+                    type: integer
+                    format: int32
+                  end:
+                    type: integer
+                    format: int32
                   params:
                     type: array
                     items:
@@ -12734,6 +13110,190 @@ paths:
                     type: array
                     items:
                       type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /supsi-dacd-isaac/pm/pm/lemMeasure:
+    get:
+      summary: Queries a list of lemMeasure items.
+      operationId: SupsidacdisaacPmPmLemMeasureAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              lemMeasure:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    player:
+                      type: string
+                    signal:
+                      type: string
+                    timestamp:
+                      type: integer
+                      format: int32
+                    value:
+                      type: string
+                    mu:
+                      type: string
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  nextKey:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.countTotal
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/supsi-dacd-isaac/pm/pm/lemMeasure/{index}':
+    get:
+      summary: Queries a lemMeasure by index.
+      operationId: SupsidacdisaacPmPmLemMeasure
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              lemMeasure:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  player:
+                    type: string
+                  signal:
+                    type: string
+                  timestamp:
+                    type: integer
+                    format: int32
+                  value:
+                    type: string
+                  mu:
+                    type: string
                   creator:
                     type: string
         default:
@@ -12777,6 +13337,8 @@ paths:
                   type: object
                   properties:
                     index:
+                      type: string
+                    idx:
                       type: string
                     address:
                       type: string
@@ -12900,10 +13462,186 @@ paths:
                 properties:
                   index:
                     type: string
+                  idx:
+                    type: string
                   address:
                     type: string
                   role:
                     type: string
+                  creator:
+                    type: string
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: index
+          in: path
+          required: true
+          type: string
+      tags:
+        - Query
+  /supsi-dacd-isaac/pm/pm/sla:
+    get:
+      summary: Queries a list of sla items.
+      operationId: SupsidacdisaacPmPmSlaAll
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              sla:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    index:
+                      type: string
+                    start:
+                      type: integer
+                      format: int32
+                    end:
+                      type: integer
+                      format: int32
+                    creator:
+                      type: string
+              pagination:
+                type: object
+                properties:
+                  nextKey:
+                    type: string
+                    format: byte
+                    title: |-
+                      next_key is the key to be passed to PageRequest.key to
+                      query the next page most efficiently
+                  total:
+                    type: string
+                    format: uint64
+                    title: >-
+                      total is total number of results available if
+                      PageRequest.count_total
+
+                      was set, its value is undefined otherwise
+                description: >-
+                  PageResponse is to be embedded in gRPC response messages where
+                  the
+
+                  corresponding request message has used PageRequest.
+
+                   message SomeResponse {
+                           repeated Bar results = 1;
+                           PageResponse page = 2;
+                   }
+        default:
+          description: An unexpected error response.
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    '@type':
+                      type: string
+                  additionalProperties: {}
+      parameters:
+        - name: pagination.key
+          description: |-
+            key is a value returned in PageResponse.next_key to begin
+            querying the next page most efficiently. Only one of offset or key
+            should be set.
+          in: query
+          required: false
+          type: string
+          format: byte
+        - name: pagination.offset
+          description: >-
+            offset is a numeric offset that can be used when key is unavailable.
+
+            It is less efficient than using key. Only one of offset or key
+            should
+
+            be set.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.limit
+          description: >-
+            limit is the total number of results to be returned in the result
+            page.
+
+            If left empty it will default to a value to be set by each app.
+          in: query
+          required: false
+          type: string
+          format: uint64
+        - name: pagination.countTotal
+          description: >-
+            count_total is set to true  to indicate that the result set should
+            include
+
+            a count of the total number of items available for pagination in
+            UIs.
+
+            count_total is only respected when offset is used. It is ignored
+            when key
+
+            is set.
+          in: query
+          required: false
+          type: boolean
+        - name: pagination.reverse
+          description: >-
+            reverse is set to true if results are to be returned in the
+            descending order.
+          in: query
+          required: false
+          type: boolean
+      tags:
+        - Query
+  '/supsi-dacd-isaac/pm/pm/sla/{index}':
+    get:
+      summary: Queries a sla by index.
+      operationId: SupsidacdisaacPmPmSla
+      responses:
+        '200':
+          description: A successful response.
+          schema:
+            type: object
+            properties:
+              sla:
+                type: object
+                properties:
+                  index:
+                    type: string
+                  start:
+                    type: integer
+                    format: int32
+                  end:
+                    type: integer
+                    format: int32
                   creator:
                     type: string
         default:
@@ -20248,7 +20986,7 @@ definitions:
   supsidacdisaac.pm.pm.Aggregator:
     type: object
     properties:
-      index:
+      idx:
         type: string
       address:
         type: string
@@ -20257,9 +20995,45 @@ definitions:
   supsidacdisaac.pm.pm.Dso:
     type: object
     properties:
-      index:
+      idx:
         type: string
       address:
+        type: string
+      creator:
+        type: string
+  supsidacdisaac.pm.pm.Kpi:
+    type: object
+    properties:
+      index:
+        type: string
+      sla:
+        type: string
+      rule:
+        type: string
+      limit:
+        type: string
+      mu:
+        type: string
+      penalty:
+        type: integer
+        format: int32
+      creator:
+        type: string
+  supsidacdisaac.pm.pm.KpiMeasure:
+    type: object
+    properties:
+      index:
+        type: string
+      kpi:
+        type: string
+      player:
+        type: string
+      timestamp:
+        type: integer
+        format: int32
+      value:
+        type: string
+      mu:
         type: string
       creator:
         type: string
@@ -20268,8 +21042,12 @@ definitions:
     properties:
       index:
         type: string
-      indexEnd:
-        type: string
+      start:
+        type: integer
+        format: int32
+      end:
+        type: integer
+        format: int32
       params:
         type: array
         items:
@@ -20280,34 +21058,78 @@ definitions:
           type: string
       creator:
         type: string
+  supsidacdisaac.pm.pm.LemMeasure:
+    type: object
+    properties:
+      index:
+        type: string
+      player:
+        type: string
+      signal:
+        type: string
+      timestamp:
+        type: integer
+        format: int32
+      value:
+        type: string
+      mu:
+        type: string
+      creator:
+        type: string
   supsidacdisaac.pm.pm.MsgCreateAggregatorResponse:
     type: object
   supsidacdisaac.pm.pm.MsgCreateDsoResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgCreateKpiMeasureResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgCreateKpiResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgCreateLemMeasureResponse:
     type: object
   supsidacdisaac.pm.pm.MsgCreateLemResponse:
     type: object
   supsidacdisaac.pm.pm.MsgCreatePlayerResponse:
     type: object
+  supsidacdisaac.pm.pm.MsgCreateSlaResponse:
+    type: object
   supsidacdisaac.pm.pm.MsgDeleteAggregatorResponse:
     type: object
   supsidacdisaac.pm.pm.MsgDeleteDsoResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgDeleteKpiMeasureResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgDeleteKpiResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgDeleteLemMeasureResponse:
     type: object
   supsidacdisaac.pm.pm.MsgDeleteLemResponse:
     type: object
   supsidacdisaac.pm.pm.MsgDeletePlayerResponse:
     type: object
+  supsidacdisaac.pm.pm.MsgDeleteSlaResponse:
+    type: object
   supsidacdisaac.pm.pm.MsgUpdateAggregatorResponse:
     type: object
   supsidacdisaac.pm.pm.MsgUpdateDsoResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgUpdateKpiMeasureResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgUpdateKpiResponse:
+    type: object
+  supsidacdisaac.pm.pm.MsgUpdateLemMeasureResponse:
     type: object
   supsidacdisaac.pm.pm.MsgUpdateLemResponse:
     type: object
   supsidacdisaac.pm.pm.MsgUpdatePlayerResponse:
     type: object
+  supsidacdisaac.pm.pm.MsgUpdateSlaResponse:
+    type: object
   supsidacdisaac.pm.pm.Player:
     type: object
     properties:
       index:
+        type: string
+      idx:
         type: string
       address:
         type: string
@@ -20315,6 +21137,150 @@ definitions:
         type: string
       creator:
         type: string
+  supsidacdisaac.pm.pm.QueryAllKpiMeasureResponse:
+    type: object
+    properties:
+      kpiMeasure:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            kpi:
+              type: string
+            player:
+              type: string
+            timestamp:
+              type: integer
+              format: int32
+            value:
+              type: string
+            mu:
+              type: string
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          nextKey:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  supsidacdisaac.pm.pm.QueryAllKpiResponse:
+    type: object
+    properties:
+      kpi:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            sla:
+              type: string
+            rule:
+              type: string
+            limit:
+              type: string
+            mu:
+              type: string
+            penalty:
+              type: integer
+              format: int32
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          nextKey:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  supsidacdisaac.pm.pm.QueryAllLemMeasureResponse:
+    type: object
+    properties:
+      lemMeasure:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            player:
+              type: string
+            signal:
+              type: string
+            timestamp:
+              type: integer
+              format: int32
+            value:
+              type: string
+            mu:
+              type: string
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          nextKey:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
   supsidacdisaac.pm.pm.QueryAllLemResponse:
     type: object
     properties:
@@ -20325,8 +21291,12 @@ definitions:
           properties:
             index:
               type: string
-            indexEnd:
-              type: string
+            start:
+              type: integer
+              format: int32
+            end:
+              type: integer
+              format: int32
             params:
               type: array
               items:
@@ -20372,10 +21342,55 @@ definitions:
           properties:
             index:
               type: string
+            idx:
+              type: string
             address:
               type: string
             role:
               type: string
+            creator:
+              type: string
+      pagination:
+        type: object
+        properties:
+          nextKey:
+            type: string
+            format: byte
+            title: |-
+              next_key is the key to be passed to PageRequest.key to
+              query the next page most efficiently
+          total:
+            type: string
+            format: uint64
+            title: >-
+              total is total number of results available if
+              PageRequest.count_total
+
+              was set, its value is undefined otherwise
+        description: |-
+          PageResponse is to be embedded in gRPC response messages where the
+          corresponding request message has used PageRequest.
+
+           message SomeResponse {
+                   repeated Bar results = 1;
+                   PageResponse page = 2;
+           }
+  supsidacdisaac.pm.pm.QueryAllSlaResponse:
+    type: object
+    properties:
+      sla:
+        type: array
+        items:
+          type: object
+          properties:
+            index:
+              type: string
+            start:
+              type: integer
+              format: int32
+            end:
+              type: integer
+              format: int32
             creator:
               type: string
       pagination:
@@ -20409,7 +21424,7 @@ definitions:
       Aggregator:
         type: object
         properties:
-          index:
+          idx:
             type: string
           address:
             type: string
@@ -20421,9 +21436,72 @@ definitions:
       Dso:
         type: object
         properties:
-          index:
+          idx:
             type: string
           address:
+            type: string
+          creator:
+            type: string
+  supsidacdisaac.pm.pm.QueryGetKpiMeasureResponse:
+    type: object
+    properties:
+      kpiMeasure:
+        type: object
+        properties:
+          index:
+            type: string
+          kpi:
+            type: string
+          player:
+            type: string
+          timestamp:
+            type: integer
+            format: int32
+          value:
+            type: string
+          mu:
+            type: string
+          creator:
+            type: string
+  supsidacdisaac.pm.pm.QueryGetKpiResponse:
+    type: object
+    properties:
+      kpi:
+        type: object
+        properties:
+          index:
+            type: string
+          sla:
+            type: string
+          rule:
+            type: string
+          limit:
+            type: string
+          mu:
+            type: string
+          penalty:
+            type: integer
+            format: int32
+          creator:
+            type: string
+  supsidacdisaac.pm.pm.QueryGetLemMeasureResponse:
+    type: object
+    properties:
+      lemMeasure:
+        type: object
+        properties:
+          index:
+            type: string
+          player:
+            type: string
+          signal:
+            type: string
+          timestamp:
+            type: integer
+            format: int32
+          value:
+            type: string
+          mu:
             type: string
           creator:
             type: string
@@ -20435,8 +21513,12 @@ definitions:
         properties:
           index:
             type: string
-          indexEnd:
-            type: string
+          start:
+            type: integer
+            format: int32
+          end:
+            type: integer
+            format: int32
           params:
             type: array
             items:
@@ -20455,9 +21537,40 @@ definitions:
         properties:
           index:
             type: string
+          idx:
+            type: string
           address:
             type: string
           role:
             type: string
           creator:
             type: string
+  supsidacdisaac.pm.pm.QueryGetSlaResponse:
+    type: object
+    properties:
+      sla:
+        type: object
+        properties:
+          index:
+            type: string
+          start:
+            type: integer
+            format: int32
+          end:
+            type: integer
+            format: int32
+          creator:
+            type: string
+  supsidacdisaac.pm.pm.Sla:
+    type: object
+    properties:
+      index:
+        type: string
+      start:
+        type: integer
+        format: int32
+      end:
+        type: integer
+        format: int32
+      creator:
+        type: string

@@ -168,6 +168,64 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryKpiAll
+         * @summary Queries a list of kpi items.
+         * @request GET:/supsi-dacd-isaac/pm/pm/kpi
+         */
+        this.queryKpiAll = (query, params = {}) => this.request({
+            path: `/supsi-dacd-isaac/pm/pm/kpi`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryKpi
+         * @summary Queries a kpi by index.
+         * @request GET:/supsi-dacd-isaac/pm/pm/kpi/{index}
+         */
+        this.queryKpi = (index, params = {}) => this.request({
+            path: `/supsi-dacd-isaac/pm/pm/kpi/${index}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryKpiMeasureAll
+         * @summary Queries a list of kpiMeasure items.
+         * @request GET:/supsi-dacd-isaac/pm/pm/kpiMeasure
+         */
+        this.queryKpiMeasureAll = (query, params = {}) => this.request({
+            path: `/supsi-dacd-isaac/pm/pm/kpiMeasure`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryKpiMeasure
+         * @summary Queries a kpiMeasure by index.
+         * @request GET:/supsi-dacd-isaac/pm/pm/kpiMeasure/{index}
+         */
+        this.queryKpiMeasure = (index, params = {}) => this.request({
+            path: `/supsi-dacd-isaac/pm/pm/kpiMeasure/${index}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryLemAll
          * @summary Queries a list of lem items.
          * @request GET:/supsi-dacd-isaac/pm/pm/lem
@@ -197,6 +255,35 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryLemMeasureAll
+         * @summary Queries a list of lemMeasure items.
+         * @request GET:/supsi-dacd-isaac/pm/pm/lemMeasure
+         */
+        this.queryLemMeasureAll = (query, params = {}) => this.request({
+            path: `/supsi-dacd-isaac/pm/pm/lemMeasure`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryLemMeasure
+         * @summary Queries a lemMeasure by index.
+         * @request GET:/supsi-dacd-isaac/pm/pm/lemMeasure/{index}
+         */
+        this.queryLemMeasure = (index, params = {}) => this.request({
+            path: `/supsi-dacd-isaac/pm/pm/lemMeasure/${index}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryPlayerAll
          * @summary Queries a list of player items.
          * @request GET:/supsi-dacd-isaac/pm/pm/player
@@ -218,6 +305,35 @@ export class Api extends HttpClient {
          */
         this.queryPlayer = (index, params = {}) => this.request({
             path: `/supsi-dacd-isaac/pm/pm/player/${index}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QuerySlaAll
+         * @summary Queries a list of sla items.
+         * @request GET:/supsi-dacd-isaac/pm/pm/sla
+         */
+        this.querySlaAll = (query, params = {}) => this.request({
+            path: `/supsi-dacd-isaac/pm/pm/sla`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QuerySla
+         * @summary Queries a sla by index.
+         * @request GET:/supsi-dacd-isaac/pm/pm/sla/{index}
+         */
+        this.querySla = (index, params = {}) => this.request({
+            path: `/supsi-dacd-isaac/pm/pm/sla/${index}`,
             method: "GET",
             format: "json",
             ...params,

@@ -7,7 +7,7 @@ import "gogoproto/gogo.proto";
 
 
 message Aggregator {
-  string index = 1; 
+  string idx = 1; 
   string address = 2; 
   string creator = 3;
 }

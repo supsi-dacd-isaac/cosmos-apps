@@ -7,9 +7,10 @@ option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/pm/x/pm/types";
 
 message Lem {
   string index = 1; 
-  string indexEnd = 2;
-  repeated string params = 3;
-  repeated string players = 4;
-  string creator = 5;
+  int32 start = 2; 
+  int32 end = 3;
+  repeated string params = 4;
+  repeated string players = 5;
+  string creator = 6;
 }
 

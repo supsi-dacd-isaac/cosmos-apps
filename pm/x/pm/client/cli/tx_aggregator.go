@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -12,11 +11,11 @@ import (
 
 func CmdCreateAggregator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-aggregator [index] [address]",
+		Use:   "create-aggregator [idx] [address]",
 		Short: "Create aggregator",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argIndex := args[0]
+			argIdx := args[0]
 			argAddress := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -24,13 +23,7 @@ func CmdCreateAggregator() *cobra.Command {
 				return err
 			}
 
-			// Check if the node performing the transaction is the DSO
-			if isDSO(clientCtx) == false {
-				fmt.Println("Node ", clientCtx.GetFromAddress().String(), " not allowed to create the aggregator")
-				return nil
-			}
-
-			msg := types.NewMsgCreateAggregator(clientCtx.GetFromAddress().String(), argIndex, argAddress)
+			msg := types.NewMsgCreateAggregator(clientCtx.GetFromAddress().String(), argIdx, argAddress)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -45,11 +38,11 @@ func CmdCreateAggregator() *cobra.Command {
 
 func CmdUpdateAggregator() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-aggregator [index] [address]",
+		Use:   "update-aggregator [idx] [address]",
 		Short: "Update aggregator",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argIndex := args[0]
+			argIdx := args[0]
 			argAddress := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -57,13 +50,7 @@ func CmdUpdateAggregator() *cobra.Command {
 				return err
 			}
 
-			// Check if the node performing the transaction is the DSO
-			if isDSO(clientCtx) == false {
-				fmt.Println("Node ", clientCtx.GetFromAddress().String(), " not allowed to update the aggregator")
-				return nil
-			}
-
-			msg := types.NewMsgUpdateAggregator(clientCtx.GetFromAddress().String(), argIndex, argAddress)
+			msg := types.NewMsgUpdateAggregator(clientCtx.GetFromAddress().String(), argIdx, argAddress)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -85,12 +72,6 @@ func CmdDeleteAggregator() *cobra.Command {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
-			}
-
-			// Check if the node performing the transaction is the DSO
-			if isDSO(clientCtx) == false {
-				fmt.Println("Node ", clientCtx.GetFromAddress().String(), " not allowed to delete the aggregator")
-				return nil
 			}
 
 			msg := types.NewMsgDeleteAggregator(clientCtx.GetFromAddress().String())

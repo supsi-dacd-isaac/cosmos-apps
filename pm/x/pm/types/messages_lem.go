@@ -10,17 +10,19 @@ var _ sdk.Msg = &MsgCreateLem{}
 func NewMsgCreateLem(
 	creator string,
 	index string,
-	indexEnd string,
+	start int32,
+	end int32,
 	params []string,
 	players []string,
 
 ) *MsgCreateLem {
 	return &MsgCreateLem{
-		Creator:  creator,
-		Index:    index,
-		IndexEnd: indexEnd,
-		Params:   params,
-		Players:  players,
+		Creator: creator,
+		Index:   index,
+		Start:   start,
+		End:     end,
+		Params:  params,
+		Players: players,
 	}
 }
 
@@ -58,17 +60,19 @@ var _ sdk.Msg = &MsgUpdateLem{}
 func NewMsgUpdateLem(
 	creator string,
 	index string,
-	indexEnd string,
+	start int32,
+	end int32,
 	params []string,
 	players []string,
 
 ) *MsgUpdateLem {
 	return &MsgUpdateLem{
-		Creator:  creator,
-		Index:    index,
-		IndexEnd: indexEnd,
-		Params:   params,
-		Players:  players,
+		Creator: creator,
+		Index:   index,
+		Start:   start,
+		End:     end,
+		Params:  params,
+		Players: players,
 	}
 }
 

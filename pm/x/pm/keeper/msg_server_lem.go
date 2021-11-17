@@ -21,11 +21,12 @@ func (k msgServer) CreateLem(goCtx context.Context, msg *types.MsgCreateLem) (*t
 	}
 
 	var lem = types.Lem{
-		Creator:  msg.Creator,
-		Index:    msg.Index,
-		IndexEnd: msg.IndexEnd,
-		Params:   msg.Params,
-		Players:  msg.Players,
+		Creator: msg.Creator,
+		Index:   msg.Index,
+		Start:   msg.Start,
+		End:     msg.End,
+		Params:  msg.Params,
+		Players: msg.Players,
 	}
 
 	k.SetLem(
@@ -53,11 +54,12 @@ func (k msgServer) UpdateLem(goCtx context.Context, msg *types.MsgUpdateLem) (*t
 	}
 
 	var lem = types.Lem{
-		Creator:  msg.Creator,
-		Index:    msg.Index,
-		IndexEnd: msg.IndexEnd,
-		Params:   msg.Params,
-		Players:  msg.Players,
+		Creator: msg.Creator,
+		Index:   msg.Index,
+		Start:   msg.Start,
+		End:     msg.End,
+		Params:  msg.Params,
+		Players: msg.Players,
 	}
 
 	k.SetLem(ctx, lem)

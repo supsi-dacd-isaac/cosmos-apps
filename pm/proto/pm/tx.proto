@@ -2,9 +2,13 @@ syntax = "proto3";
 package supsidacdisaac.pm.pm;
 
 import "pm/dso.proto";
-import "pm/player.proto";
 import "pm/aggregator.proto";
+import "pm/player.proto";
 import "pm/lem.proto";
+import "pm/lem_measure.proto";
+import "pm/sla.proto";
+import "pm/kpi.proto";
+import "pm/kpi_measure.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/pm/x/pm/types";
@@ -14,28 +18,40 @@ service Msg {
       rpc CreateDso(MsgCreateDso) returns (MsgCreateDsoResponse);
   rpc UpdateDso(MsgUpdateDso) returns (MsgUpdateDsoResponse);
   rpc DeleteDso(MsgDeleteDso) returns (MsgDeleteDsoResponse);
-  rpc CreatePlayer(MsgCreatePlayer) returns (MsgCreatePlayerResponse);
-  rpc UpdatePlayer(MsgUpdatePlayer) returns (MsgUpdatePlayerResponse);
-  rpc DeletePlayer(MsgDeletePlayer) returns (MsgDeletePlayerResponse);
   rpc CreateAggregator(MsgCreateAggregator) returns (MsgCreateAggregatorResponse);
   rpc UpdateAggregator(MsgUpdateAggregator) returns (MsgUpdateAggregatorResponse);
   rpc DeleteAggregator(MsgDeleteAggregator) returns (MsgDeleteAggregatorResponse);
+  rpc CreatePlayer(MsgCreatePlayer) returns (MsgCreatePlayerResponse);
+  rpc UpdatePlayer(MsgUpdatePlayer) returns (MsgUpdatePlayerResponse);
+  rpc DeletePlayer(MsgDeletePlayer) returns (MsgDeletePlayerResponse);
   rpc CreateLem(MsgCreateLem) returns (MsgCreateLemResponse);
   rpc UpdateLem(MsgUpdateLem) returns (MsgUpdateLemResponse);
   rpc DeleteLem(MsgDeleteLem) returns (MsgDeleteLemResponse);
+  rpc CreateLemMeasure(MsgCreateLemMeasure) returns (MsgCreateLemMeasureResponse);
+  rpc UpdateLemMeasure(MsgUpdateLemMeasure) returns (MsgUpdateLemMeasureResponse);
+  rpc DeleteLemMeasure(MsgDeleteLemMeasure) returns (MsgDeleteLemMeasureResponse);
+  rpc CreateSla(MsgCreateSla) returns (MsgCreateSlaResponse);
+  rpc UpdateSla(MsgUpdateSla) returns (MsgUpdateSlaResponse);
+  rpc DeleteSla(MsgDeleteSla) returns (MsgDeleteSlaResponse);
+  rpc CreateKpi(MsgCreateKpi) returns (MsgCreateKpiResponse);
+  rpc UpdateKpi(MsgUpdateKpi) returns (MsgUpdateKpiResponse);
+  rpc DeleteKpi(MsgDeleteKpi) returns (MsgDeleteKpiResponse);
+  rpc CreateKpiMeasure(MsgCreateKpiMeasure) returns (MsgCreateKpiMeasureResponse);
+  rpc UpdateKpiMeasure(MsgUpdateKpiMeasure) returns (MsgUpdateKpiMeasureResponse);
+  rpc DeleteKpiMeasure(MsgDeleteKpiMeasure) returns (MsgDeleteKpiMeasureResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 message MsgCreateDso {
   string creator = 1;
-  string index = 3;
+  string idx = 3;
   string address = 4;
 }
 message MsgCreateDsoResponse {}
 
 message MsgUpdateDso {
   string creator = 1;
-  string index = 3;
+  string idx = 3;
   string address = 4;
 }
 message MsgUpdateDsoResponse {}
@@ -44,12 +60,31 @@ message MsgDeleteDso {
   string creator = 1;
 }
 message MsgDeleteDsoResponse {}
+message MsgCreateAggregator {
+  string creator = 1;
+  string idx = 3;
+  string address = 4;
+}
+message MsgCreateAggregatorResponse {}
+
+message MsgUpdateAggregator {
+  string creator = 1;
+  string idx = 3;
+  string address = 4;
+}
+message MsgUpdateAggregatorResponse {}
+
+message MsgDeleteAggregator {
+  string creator = 1;
+}
+message MsgDeleteAggregatorResponse {}
 message MsgCreatePlayer {
   string creator = 1;
   string index = 2;
 
-  string address = 3;
-  string role = 4;
+  string idx = 3;
+  string address = 4;
+  string role = 5;
 }
 message MsgCreatePlayerResponse {}
 
@@ -57,8 +92,9 @@ message MsgUpdatePlayer {
   string creator = 1;
   string index = 2;
 
-  string address = 3;
-  string role = 4;
+  string idx = 3;
+  string address = 4;
+  string role = 5;
 }
 message MsgUpdatePlayerResponse {}
 
@@ -68,31 +104,14 @@ message MsgDeletePlayer {
 }
 message MsgDeletePlayerResponse {}
 
-message MsgCreateAggregator {
-  string creator = 1;
-  string index = 3;
-  string address = 4;
-}
-message MsgCreateAggregatorResponse {}
-
-message MsgUpdateAggregator {
-  string creator = 1;
-  string index = 3;
-  string address = 4;
-}
-message MsgUpdateAggregatorResponse {}
-
-message MsgDeleteAggregator {
-  string creator = 1;
-}
-message MsgDeleteAggregatorResponse {}
 message MsgCreateLem {
   string creator = 1;
   string index = 2;
 
-  string indexEnd = 3;
-  repeated string params = 4;
-  repeated string players = 5;
+  int32 start = 3;
+  int32 end = 4;
+  repeated string params = 5;
+  repeated string players = 6;
 }
 message MsgCreateLemResponse {}
 
@@ -100,9 +119,10 @@ message MsgUpdateLem {
   string creator = 1;
   string index = 2;
 
-  string indexEnd = 3;
-  repeated string params = 4;
-  repeated string players = 5;
+  int32 start = 3;
+  int32 end = 4;
+  repeated string params = 5;
+  repeated string players = 6;
 }
 message MsgUpdateLemResponse {}
 
@@ -111,5 +131,119 @@ message MsgDeleteLem {
   string index = 2;
 }
 message MsgDeleteLemResponse {}
+
+message MsgCreateLemMeasure {
+  string creator = 1;
+  string index = 2;
+
+  string player = 3;
+  string signal = 4;
+  int32 timestamp = 5;
+  string value = 6;
+  string mu = 7;
+}
+message MsgCreateLemMeasureResponse {}
+
+message MsgUpdateLemMeasure {
+  string creator = 1;
+  string index = 2;
+
+  string player = 3;
+  string signal = 4;
+  int32 timestamp = 5;
+  string value = 6;
+  string mu = 7;
+}
+message MsgUpdateLemMeasureResponse {}
+
+message MsgDeleteLemMeasure {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteLemMeasureResponse {}
+
+message MsgCreateSla {
+  string creator = 1;
+  string index = 2;
+
+  int32 start = 3;
+  int32 end = 4;
+}
+message MsgCreateSlaResponse {}
+
+message MsgUpdateSla {
+  string creator = 1;
+  string index = 2;
+
+  int32 start = 3;
+  int32 end = 4;
+}
+message MsgUpdateSlaResponse {}
+
+message MsgDeleteSla {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteSlaResponse {}
+
+message MsgCreateKpi {
+  string creator = 1;
+  string index = 2;
+
+  string sla = 3;
+  string rule = 4;
+  string limit = 5;
+  string mu = 6;
+  int32 penalty = 7;
+}
+message MsgCreateKpiResponse {}
+
+message MsgUpdateKpi {
+  string creator = 1;
+  string index = 2;
+
+  string sla = 3;
+  string rule = 4;
+  string limit = 5;
+  string mu = 6;
+  int32 penalty = 7;
+}
+message MsgUpdateKpiResponse {}
+
+message MsgDeleteKpi {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteKpiResponse {}
+
+message MsgCreateKpiMeasure {
+  string creator = 1;
+  string index = 2;
+
+  string kpi = 3;
+  string player = 4;
+  int32 timestamp = 5;
+  string value = 6;
+  string mu = 7;
+}
+message MsgCreateKpiMeasureResponse {}
+
+message MsgUpdateKpiMeasure {
+  string creator = 1;
+  string index = 2;
+
+  string kpi = 3;
+  string player = 4;
+  int32 timestamp = 5;
+  string value = 6;
+  string mu = 7;
+}
+message MsgUpdateKpiMeasureResponse {}
+
+message MsgDeleteKpiMeasure {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteKpiMeasureResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

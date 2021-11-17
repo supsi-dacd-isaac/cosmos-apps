@@ -1,20 +1,29 @@
 /* eslint-disable */
-import { Writer, Reader } from 'protobufjs/minimal';
-export const protobufPackage = 'supsidacdisaac.pm.pm';
-const basePlayer = { index: '', address: '', role: '', creator: '' };
+import { Writer, Reader } from "protobufjs/minimal";
+export const protobufPackage = "supsidacdisaac.pm.pm";
+const basePlayer = {
+    index: "",
+    idx: "",
+    address: "",
+    role: "",
+    creator: "",
+};
 export const Player = {
     encode(message, writer = Writer.create()) {
-        if (message.index !== '') {
+        if (message.index !== "") {
             writer.uint32(10).string(message.index);
         }
-        if (message.address !== '') {
-            writer.uint32(18).string(message.address);
+        if (message.idx !== "") {
+            writer.uint32(18).string(message.idx);
         }
-        if (message.role !== '') {
-            writer.uint32(26).string(message.role);
+        if (message.address !== "") {
+            writer.uint32(26).string(message.address);
         }
-        if (message.creator !== '') {
-            writer.uint32(34).string(message.creator);
+        if (message.role !== "") {
+            writer.uint32(34).string(message.role);
+        }
+        if (message.creator !== "") {
+            writer.uint32(42).string(message.creator);
         }
         return writer;
     },
@@ -29,12 +38,15 @@ export const Player = {
                     message.index = reader.string();
                     break;
                 case 2:
-                    message.address = reader.string();
+                    message.idx = reader.string();
                     break;
                 case 3:
-                    message.role = reader.string();
+                    message.address = reader.string();
                     break;
                 case 4:
+                    message.role = reader.string();
+                    break;
+                case 5:
                     message.creator = reader.string();
                     break;
                 default:
@@ -50,31 +62,38 @@ export const Player = {
             message.index = String(object.index);
         }
         else {
-            message.index = '';
+            message.index = "";
+        }
+        if (object.idx !== undefined && object.idx !== null) {
+            message.idx = String(object.idx);
+        }
+        else {
+            message.idx = "";
         }
         if (object.address !== undefined && object.address !== null) {
             message.address = String(object.address);
         }
         else {
-            message.address = '';
+            message.address = "";
         }
         if (object.role !== undefined && object.role !== null) {
             message.role = String(object.role);
         }
         else {
-            message.role = '';
+            message.role = "";
         }
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = String(object.creator);
         }
         else {
-            message.creator = '';
+            message.creator = "";
         }
         return message;
     },
     toJSON(message) {
         const obj = {};
         message.index !== undefined && (obj.index = message.index);
+        message.idx !== undefined && (obj.idx = message.idx);
         message.address !== undefined && (obj.address = message.address);
         message.role !== undefined && (obj.role = message.role);
         message.creator !== undefined && (obj.creator = message.creator);
@@ -86,26 +105,32 @@ export const Player = {
             message.index = object.index;
         }
         else {
-            message.index = '';
+            message.index = "";
+        }
+        if (object.idx !== undefined && object.idx !== null) {
+            message.idx = object.idx;
+        }
+        else {
+            message.idx = "";
         }
         if (object.address !== undefined && object.address !== null) {
             message.address = object.address;
         }
         else {
-            message.address = '';
+            message.address = "";
         }
         if (object.role !== undefined && object.role !== null) {
             message.role = object.role;
         }
         else {
-            message.role = '';
+            message.role = "";
         }
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = object.creator;
         }
         else {
-            message.creator = '';
+            message.creator = "";
         }
         return message;
-    }
+    },
 };

@@ -19,7 +19,7 @@ func (k msgServer) CreateAggregator(goCtx context.Context, msg *types.MsgCreateA
 
 	var aggregator = types.Aggregator{
 		Creator: msg.Creator,
-		Index:   msg.Index,
+		Idx:     msg.Idx,
 		Address: msg.Address,
 	}
 
@@ -46,7 +46,7 @@ func (k msgServer) UpdateAggregator(goCtx context.Context, msg *types.MsgUpdateA
 
 	var aggregator = types.Aggregator{
 		Creator: msg.Creator,
-		Index:   msg.Index,
+		Idx:     msg.Idx,
 		Address: msg.Address,
 	}
 

@@ -12,7 +12,11 @@ import (
 func TestGenesis(t *testing.T) {
 	genesisState := types.GenesisState{
 		Dso: &types.Dso{
-			Index:   "index",
+			Idx:     "idx",
+			Address: "address",
+		},
+		Aggregator: &types.Aggregator{
+			Idx:     "idx",
 			Address: "address",
 		},
 		PlayerList: []types.Player{
@@ -23,11 +27,39 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
-		Aggregator: &types.Aggregator{
-			Index:   "index",
-			Address: "address",
-		},
 		LemList: []types.Lem{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		LemMeasureList: []types.LemMeasure{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		SlaList: []types.Sla{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		KpiList: []types.Kpi{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
+		KpiMeasureList: []types.KpiMeasure{
 			{
 				Index: "0",
 			},
@@ -44,10 +76,18 @@ func TestGenesis(t *testing.T) {
 	require.NotNil(t, got)
 
 	require.Equal(t, genesisState.Dso, got.Dso)
+	require.Equal(t, genesisState.Aggregator, got.Aggregator)
 	require.Len(t, got.PlayerList, len(genesisState.PlayerList))
 	require.Subset(t, genesisState.PlayerList, got.PlayerList)
-	require.Equal(t, genesisState.Aggregator, got.Aggregator)
 	require.Len(t, got.LemList, len(genesisState.LemList))
 	require.Subset(t, genesisState.LemList, got.LemList)
+	require.Len(t, got.LemMeasureList, len(genesisState.LemMeasureList))
+	require.Subset(t, genesisState.LemMeasureList, got.LemMeasureList)
+	require.Len(t, got.SlaList, len(genesisState.SlaList))
+	require.Subset(t, genesisState.SlaList, got.SlaList)
+	require.Len(t, got.KpiList, len(genesisState.KpiList))
+	require.Subset(t, genesisState.KpiList, got.KpiList)
+	require.Len(t, got.KpiMeasureList, len(genesisState.KpiMeasureList))
+	require.Subset(t, genesisState.KpiMeasureList, got.KpiMeasureList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

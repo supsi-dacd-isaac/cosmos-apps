@@ -1,16 +1,16 @@
 /* eslint-disable */
-import { Writer, Reader } from 'protobufjs/minimal';
-export const protobufPackage = 'supsidacdisaac.pm.pm';
-const baseAggregator = { index: '', address: '', creator: '' };
+import { Writer, Reader } from "protobufjs/minimal";
+export const protobufPackage = "supsidacdisaac.pm.pm";
+const baseAggregator = { idx: "", address: "", creator: "" };
 export const Aggregator = {
     encode(message, writer = Writer.create()) {
-        if (message.index !== '') {
-            writer.uint32(10).string(message.index);
+        if (message.idx !== "") {
+            writer.uint32(10).string(message.idx);
         }
-        if (message.address !== '') {
+        if (message.address !== "") {
             writer.uint32(18).string(message.address);
         }
-        if (message.creator !== '') {
+        if (message.creator !== "") {
             writer.uint32(26).string(message.creator);
         }
         return writer;
@@ -23,7 +23,7 @@ export const Aggregator = {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.index = reader.string();
+                    message.idx = reader.string();
                     break;
                 case 2:
                     message.address = reader.string();
@@ -40,53 +40,53 @@ export const Aggregator = {
     },
     fromJSON(object) {
         const message = { ...baseAggregator };
-        if (object.index !== undefined && object.index !== null) {
-            message.index = String(object.index);
+        if (object.idx !== undefined && object.idx !== null) {
+            message.idx = String(object.idx);
         }
         else {
-            message.index = '';
+            message.idx = "";
         }
         if (object.address !== undefined && object.address !== null) {
             message.address = String(object.address);
         }
         else {
-            message.address = '';
+            message.address = "";
         }
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = String(object.creator);
         }
         else {
-            message.creator = '';
+            message.creator = "";
         }
         return message;
     },
     toJSON(message) {
         const obj = {};
-        message.index !== undefined && (obj.index = message.index);
+        message.idx !== undefined && (obj.idx = message.idx);
         message.address !== undefined && (obj.address = message.address);
         message.creator !== undefined && (obj.creator = message.creator);
         return obj;
     },
     fromPartial(object) {
         const message = { ...baseAggregator };
-        if (object.index !== undefined && object.index !== null) {
-            message.index = object.index;
+        if (object.idx !== undefined && object.idx !== null) {
+            message.idx = object.idx;
         }
         else {
-            message.index = '';
+            message.idx = "";
         }
         if (object.address !== undefined && object.address !== null) {
             message.address = object.address;
         }
         else {
-            message.address = '';
+            message.address = "";
         }
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = object.creator;
         }
         else {
-            message.creator = '';
+            message.creator = "";
         }
         return message;
-    }
+    },
 };

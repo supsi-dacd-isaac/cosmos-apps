@@ -10,22 +10,63 @@
  */
 
 export interface PmAggregator {
-  index?: string;
+  idx?: string;
   address?: string;
   creator?: string;
 }
 
 export interface PmDso {
-  index?: string;
+  idx?: string;
   address?: string;
+  creator?: string;
+}
+
+export interface PmKpi {
+  index?: string;
+  sla?: string;
+  rule?: string;
+  limit?: string;
+  mu?: string;
+
+  /** @format int32 */
+  penalty?: number;
+  creator?: string;
+}
+
+export interface PmKpiMeasure {
+  index?: string;
+  kpi?: string;
+  player?: string;
+
+  /** @format int32 */
+  timestamp?: number;
+  value?: string;
+  mu?: string;
   creator?: string;
 }
 
 export interface PmLem {
   index?: string;
-  indexEnd?: string;
+
+  /** @format int32 */
+  start?: number;
+
+  /** @format int32 */
+  end?: number;
   params?: string[];
   players?: string[];
+  creator?: string;
+}
+
+export interface PmLemMeasure {
+  index?: string;
+  player?: string;
+  signal?: string;
+
+  /** @format int32 */
+  timestamp?: number;
+  value?: string;
+  mu?: string;
   creator?: string;
 }
 
@@ -33,31 +74,101 @@ export type PmMsgCreateAggregatorResponse = object;
 
 export type PmMsgCreateDsoResponse = object;
 
+export type PmMsgCreateKpiMeasureResponse = object;
+
+export type PmMsgCreateKpiResponse = object;
+
+export type PmMsgCreateLemMeasureResponse = object;
+
 export type PmMsgCreateLemResponse = object;
 
 export type PmMsgCreatePlayerResponse = object;
+
+export type PmMsgCreateSlaResponse = object;
 
 export type PmMsgDeleteAggregatorResponse = object;
 
 export type PmMsgDeleteDsoResponse = object;
 
+export type PmMsgDeleteKpiMeasureResponse = object;
+
+export type PmMsgDeleteKpiResponse = object;
+
+export type PmMsgDeleteLemMeasureResponse = object;
+
 export type PmMsgDeleteLemResponse = object;
 
 export type PmMsgDeletePlayerResponse = object;
+
+export type PmMsgDeleteSlaResponse = object;
 
 export type PmMsgUpdateAggregatorResponse = object;
 
 export type PmMsgUpdateDsoResponse = object;
 
+export type PmMsgUpdateKpiMeasureResponse = object;
+
+export type PmMsgUpdateKpiResponse = object;
+
+export type PmMsgUpdateLemMeasureResponse = object;
+
 export type PmMsgUpdateLemResponse = object;
 
 export type PmMsgUpdatePlayerResponse = object;
 
+export type PmMsgUpdateSlaResponse = object;
+
 export interface PmPlayer {
   index?: string;
+  idx?: string;
   address?: string;
   role?: string;
   creator?: string;
+}
+
+export interface PmQueryAllKpiMeasureResponse {
+  kpiMeasure?: PmKpiMeasure[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface PmQueryAllKpiResponse {
+  kpi?: PmKpi[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
+export interface PmQueryAllLemMeasureResponse {
+  lemMeasure?: PmLemMeasure[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
 }
 
 export interface PmQueryAllLemResponse {
@@ -90,6 +201,21 @@ export interface PmQueryAllPlayerResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface PmQueryAllSlaResponse {
+  sla?: PmSla[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 export interface PmQueryGetAggregatorResponse {
   Aggregator?: PmAggregator;
 }
@@ -98,12 +224,39 @@ export interface PmQueryGetDsoResponse {
   Dso?: PmDso;
 }
 
+export interface PmQueryGetKpiMeasureResponse {
+  kpiMeasure?: PmKpiMeasure;
+}
+
+export interface PmQueryGetKpiResponse {
+  kpi?: PmKpi;
+}
+
+export interface PmQueryGetLemMeasureResponse {
+  lemMeasure?: PmLemMeasure;
+}
+
 export interface PmQueryGetLemResponse {
   lem?: PmLem;
 }
 
 export interface PmQueryGetPlayerResponse {
   player?: PmPlayer;
+}
+
+export interface PmQueryGetSlaResponse {
+  sla?: PmSla;
+}
+
+export interface PmSla {
+  index?: string;
+
+  /** @format int32 */
+  start?: number;
+
+  /** @format int32 */
+  end?: number;
+  creator?: string;
 }
 
 export interface ProtobufAny {
@@ -408,6 +561,90 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryKpiAll
+   * @summary Queries a list of kpi items.
+   * @request GET:/supsi-dacd-isaac/pm/pm/kpi
+   */
+  queryKpiAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PmQueryAllKpiResponse, RpcStatus>({
+      path: `/supsi-dacd-isaac/pm/pm/kpi`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryKpi
+   * @summary Queries a kpi by index.
+   * @request GET:/supsi-dacd-isaac/pm/pm/kpi/{index}
+   */
+  queryKpi = (index: string, params: RequestParams = {}) =>
+    this.request<PmQueryGetKpiResponse, RpcStatus>({
+      path: `/supsi-dacd-isaac/pm/pm/kpi/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryKpiMeasureAll
+   * @summary Queries a list of kpiMeasure items.
+   * @request GET:/supsi-dacd-isaac/pm/pm/kpiMeasure
+   */
+  queryKpiMeasureAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PmQueryAllKpiMeasureResponse, RpcStatus>({
+      path: `/supsi-dacd-isaac/pm/pm/kpiMeasure`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryKpiMeasure
+   * @summary Queries a kpiMeasure by index.
+   * @request GET:/supsi-dacd-isaac/pm/pm/kpiMeasure/{index}
+   */
+  queryKpiMeasure = (index: string, params: RequestParams = {}) =>
+    this.request<PmQueryGetKpiMeasureResponse, RpcStatus>({
+      path: `/supsi-dacd-isaac/pm/pm/kpiMeasure/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryLemAll
    * @summary Queries a list of lem items.
    * @request GET:/supsi-dacd-isaac/pm/pm/lem
@@ -450,6 +687,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryLemMeasureAll
+   * @summary Queries a list of lemMeasure items.
+   * @request GET:/supsi-dacd-isaac/pm/pm/lemMeasure
+   */
+  queryLemMeasureAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PmQueryAllLemMeasureResponse, RpcStatus>({
+      path: `/supsi-dacd-isaac/pm/pm/lemMeasure`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryLemMeasure
+   * @summary Queries a lemMeasure by index.
+   * @request GET:/supsi-dacd-isaac/pm/pm/lemMeasure/{index}
+   */
+  queryLemMeasure = (index: string, params: RequestParams = {}) =>
+    this.request<PmQueryGetLemMeasureResponse, RpcStatus>({
+      path: `/supsi-dacd-isaac/pm/pm/lemMeasure/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryPlayerAll
    * @summary Queries a list of player items.
    * @request GET:/supsi-dacd-isaac/pm/pm/player
@@ -483,6 +762,48 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   queryPlayer = (index: string, params: RequestParams = {}) =>
     this.request<PmQueryGetPlayerResponse, RpcStatus>({
       path: `/supsi-dacd-isaac/pm/pm/player/${index}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySlaAll
+   * @summary Queries a list of sla items.
+   * @request GET:/supsi-dacd-isaac/pm/pm/sla
+   */
+  querySlaAll = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.countTotal"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<PmQueryAllSlaResponse, RpcStatus>({
+      path: `/supsi-dacd-isaac/pm/pm/sla`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QuerySla
+   * @summary Queries a sla by index.
+   * @request GET:/supsi-dacd-isaac/pm/pm/sla/{index}
+   */
+  querySla = (index: string, params: RequestParams = {}) =>
+    this.request<PmQueryGetSlaResponse, RpcStatus>({
+      path: `/supsi-dacd-isaac/pm/pm/sla/${index}`,
       method: "GET",
       format: "json",
       ...params,

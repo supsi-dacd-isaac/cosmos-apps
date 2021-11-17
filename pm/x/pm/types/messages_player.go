@@ -10,6 +10,7 @@ var _ sdk.Msg = &MsgCreatePlayer{}
 func NewMsgCreatePlayer(
 	creator string,
 	index string,
+	idx string,
 	address string,
 	role string,
 
@@ -17,6 +18,7 @@ func NewMsgCreatePlayer(
 	return &MsgCreatePlayer{
 		Creator: creator,
 		Index:   index,
+		Idx:     idx,
 		Address: address,
 		Role:    role,
 	}
@@ -56,6 +58,7 @@ var _ sdk.Msg = &MsgUpdatePlayer{}
 func NewMsgUpdatePlayer(
 	creator string,
 	index string,
+	idx string,
 	address string,
 	role string,
 
@@ -63,6 +66,7 @@ func NewMsgUpdatePlayer(
 	return &MsgUpdatePlayer{
 		Creator: creator,
 		Index:   index,
+		Idx:     idx,
 		Address: address,
 		Role:    role,
 	}

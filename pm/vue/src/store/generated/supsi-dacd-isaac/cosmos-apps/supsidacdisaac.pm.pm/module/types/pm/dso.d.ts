@@ -1,7 +1,7 @@
-import { Writer, Reader } from 'protobufjs/minimal';
+import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "supsidacdisaac.pm.pm";
 export interface Dso {
-    index: string;
+    idx: string;
     address: string;
     creator: string;
 }

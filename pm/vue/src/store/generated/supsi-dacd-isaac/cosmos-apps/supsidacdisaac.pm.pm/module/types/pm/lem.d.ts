@@ -1,8 +1,9 @@
-import { Writer, Reader } from 'protobufjs/minimal';
+import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "supsidacdisaac.pm.pm";
 export interface Lem {
     index: string;
-    indexEnd: string;
+    start: number;
+    end: number;
     params: string[];
     players: string[];
     creator: string;

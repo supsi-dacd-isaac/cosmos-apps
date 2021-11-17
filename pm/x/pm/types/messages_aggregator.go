@@ -7,10 +7,10 @@ import (
 
 var _ sdk.Msg = &MsgCreateAggregator{}
 
-func NewMsgCreateAggregator(creator string, index string, address string) *MsgCreateAggregator {
+func NewMsgCreateAggregator(creator string, idx string, address string) *MsgCreateAggregator {
 	return &MsgCreateAggregator{
 		Creator: creator,
-		Index:   index,
+		Idx:     idx,
 		Address: address,
 	}
 }
@@ -46,10 +46,10 @@ func (msg *MsgCreateAggregator) ValidateBasic() error {
 
 var _ sdk.Msg = &MsgUpdateAggregator{}
 
-func NewMsgUpdateAggregator(creator string, index string, address string) *MsgUpdateAggregator {
+func NewMsgUpdateAggregator(creator string, idx string, address string) *MsgUpdateAggregator {
 	return &MsgUpdateAggregator{
 		Creator: creator,
-		Index:   index,
+		Idx:     idx,
 		Address: address,
 	}
 }

@@ -22,7 +22,11 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "valid genesis state",
 			genState: &types.GenesisState{
 				Dso: &types.Dso{
-					Index:   "index",
+					Idx:     "idx",
+					Address: "address",
+				},
+				Aggregator: &types.Aggregator{
+					Idx:     "idx",
 					Address: "address",
 				},
 				PlayerList: []types.Player{
@@ -33,11 +37,39 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
-				Aggregator: &types.Aggregator{
-					Index:   "index",
-					Address: "address",
-				},
 				LemList: []types.Lem{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				LemMeasureList: []types.LemMeasure{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				SlaList: []types.Sla{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				KpiList: []types.Kpi{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
+				KpiMeasureList: []types.KpiMeasure{
 					{
 						Index: "0",
 					},
@@ -67,6 +99,62 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated lem",
 			genState: &types.GenesisState{
 				LemList: []types.Lem{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated lemMeasure",
+			genState: &types.GenesisState{
+				LemMeasureList: []types.LemMeasure{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated sla",
+			genState: &types.GenesisState{
+				SlaList: []types.Sla{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated kpi",
+			genState: &types.GenesisState{
+				KpiList: []types.Kpi{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated kpiMeasure",
+			genState: &types.GenesisState{
+				KpiMeasureList: []types.KpiMeasure{
 					{
 						Index: "0",
 					},

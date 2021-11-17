@@ -7,8 +7,9 @@ option go_package = "github.com/supsi-dacd-isaac/cosmos-apps/pm/x/pm/types";
 
 message Player {
   string index = 1; 
-  string address = 2; 
-  string role = 3; 
-  string creator = 4;
+  string idx = 2; 
+  string address = 3; 
+  string role = 4; 
+  string creator = 5;
 }
 

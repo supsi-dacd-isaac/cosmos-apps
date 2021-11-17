@@ -1,7 +1,6 @@
 package cli
 
 import (
-	"fmt"
 	"github.com/spf13/cobra"
 
 	"github.com/cosmos/cosmos-sdk/client"
@@ -12,11 +11,11 @@ import (
 
 func CmdCreateDso() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "create-dso [index] [address]",
+		Use:   "create-dso [idx] [address]",
 		Short: "Create dso",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argIndex := args[0]
+			argIdx := args[0]
 			argAddress := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -24,7 +23,7 @@ func CmdCreateDso() *cobra.Command {
 				return err
 			}
 
-			msg := types.NewMsgCreateDso(clientCtx.GetFromAddress().String(), argIndex, argAddress)
+			msg := types.NewMsgCreateDso(clientCtx.GetFromAddress().String(), argIdx, argAddress)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -39,11 +38,11 @@ func CmdCreateDso() *cobra.Command {
 
 func CmdUpdateDso() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update-dso [index] [address]",
+		Use:   "update-dso [idx] [address]",
 		Short: "Update dso",
 		Args:  cobra.ExactArgs(2),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
-			argIndex := args[0]
+			argIdx := args[0]
 			argAddress := args[1]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
@@ -51,13 +50,7 @@ func CmdUpdateDso() *cobra.Command {
 				return err
 			}
 
-			// Check if the node performing the transaction is the DSO
-			if isDSO(clientCtx) == false {
-				fmt.Println("Node ", clientCtx.GetFromAddress().String(), " not allowed to update the DSO")
-				return nil
-			}
-
-			msg := types.NewMsgUpdateDso(clientCtx.GetFromAddress().String(), argIndex, argAddress)
+			msg := types.NewMsgUpdateDso(clientCtx.GetFromAddress().String(), argIdx, argAddress)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
 			}
@@ -79,12 +72,6 @@ func CmdDeleteDso() *cobra.Command {
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
 				return err
-			}
-
-			// Check if the node performing the transaction is the DSO
-			if isDSO(clientCtx) == false {
-				fmt.Println("Node ", clientCtx.GetFromAddress().String(), " not allowed to delete the DSO key")
-				return nil
 			}
 
 			msg := types.NewMsgDeleteDso(clientCtx.GetFromAddress().String())

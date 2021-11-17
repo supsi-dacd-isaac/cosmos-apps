@@ -1,37 +1,122 @@
 export interface PmAggregator {
-    index?: string;
+    idx?: string;
     address?: string;
     creator?: string;
 }
 export interface PmDso {
-    index?: string;
+    idx?: string;
     address?: string;
+    creator?: string;
+}
+export interface PmKpi {
+    index?: string;
+    sla?: string;
+    rule?: string;
+    limit?: string;
+    mu?: string;
+    /** @format int32 */
+    penalty?: number;
+    creator?: string;
+}
+export interface PmKpiMeasure {
+    index?: string;
+    kpi?: string;
+    player?: string;
+    /** @format int32 */
+    timestamp?: number;
+    value?: string;
+    mu?: string;
     creator?: string;
 }
 export interface PmLem {
     index?: string;
-    indexEnd?: string;
+    /** @format int32 */
+    start?: number;
+    /** @format int32 */
+    end?: number;
     params?: string[];
     players?: string[];
     creator?: string;
 }
+export interface PmLemMeasure {
+    index?: string;
+    player?: string;
+    signal?: string;
+    /** @format int32 */
+    timestamp?: number;
+    value?: string;
+    mu?: string;
+    creator?: string;
+}
 export declare type PmMsgCreateAggregatorResponse = object;
 export declare type PmMsgCreateDsoResponse = object;
+export declare type PmMsgCreateKpiMeasureResponse = object;
+export declare type PmMsgCreateKpiResponse = object;
+export declare type PmMsgCreateLemMeasureResponse = object;
 export declare type PmMsgCreateLemResponse = object;
 export declare type PmMsgCreatePlayerResponse = object;
+export declare type PmMsgCreateSlaResponse = object;
 export declare type PmMsgDeleteAggregatorResponse = object;
 export declare type PmMsgDeleteDsoResponse = object;
+export declare type PmMsgDeleteKpiMeasureResponse = object;
+export declare type PmMsgDeleteKpiResponse = object;
+export declare type PmMsgDeleteLemMeasureResponse = object;
 export declare type PmMsgDeleteLemResponse = object;
 export declare type PmMsgDeletePlayerResponse = object;
+export declare type PmMsgDeleteSlaResponse = object;
 export declare type PmMsgUpdateAggregatorResponse = object;
 export declare type PmMsgUpdateDsoResponse = object;
+export declare type PmMsgUpdateKpiMeasureResponse = object;
+export declare type PmMsgUpdateKpiResponse = object;
+export declare type PmMsgUpdateLemMeasureResponse = object;
 export declare type PmMsgUpdateLemResponse = object;
 export declare type PmMsgUpdatePlayerResponse = object;
+export declare type PmMsgUpdateSlaResponse = object;
 export interface PmPlayer {
     index?: string;
+    idx?: string;
     address?: string;
     role?: string;
     creator?: string;
+}
+export interface PmQueryAllKpiMeasureResponse {
+    kpiMeasure?: PmKpiMeasure[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
+export interface PmQueryAllKpiResponse {
+    kpi?: PmKpi[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
+export interface PmQueryAllLemMeasureResponse {
+    lemMeasure?: PmLemMeasure[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
 }
 export interface PmQueryAllLemResponse {
     lem?: PmLem[];
@@ -59,17 +144,50 @@ export interface PmQueryAllPlayerResponse {
      */
     pagination?: V1Beta1PageResponse;
 }
+export interface PmQueryAllSlaResponse {
+    sla?: PmSla[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
 export interface PmQueryGetAggregatorResponse {
     Aggregator?: PmAggregator;
 }
 export interface PmQueryGetDsoResponse {
     Dso?: PmDso;
 }
+export interface PmQueryGetKpiMeasureResponse {
+    kpiMeasure?: PmKpiMeasure;
+}
+export interface PmQueryGetKpiResponse {
+    kpi?: PmKpi;
+}
+export interface PmQueryGetLemMeasureResponse {
+    lemMeasure?: PmLemMeasure;
+}
 export interface PmQueryGetLemResponse {
     lem?: PmLem;
 }
 export interface PmQueryGetPlayerResponse {
     player?: PmPlayer;
+}
+export interface PmQueryGetSlaResponse {
+    sla?: PmSla;
+}
+export interface PmSla {
+    index?: string;
+    /** @format int32 */
+    start?: number;
+    /** @format int32 */
+    end?: number;
+    creator?: string;
 }
 export interface ProtobufAny {
     "@type"?: string;
@@ -212,6 +330,54 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
+     * @name QueryKpiAll
+     * @summary Queries a list of kpi items.
+     * @request GET:/supsi-dacd-isaac/pm/pm/kpi
+     */
+    queryKpiAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<PmQueryAllKpiResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryKpi
+     * @summary Queries a kpi by index.
+     * @request GET:/supsi-dacd-isaac/pm/pm/kpi/{index}
+     */
+    queryKpi: (index: string, params?: RequestParams) => Promise<HttpResponse<PmQueryGetKpiResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryKpiMeasureAll
+     * @summary Queries a list of kpiMeasure items.
+     * @request GET:/supsi-dacd-isaac/pm/pm/kpiMeasure
+     */
+    queryKpiMeasureAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<PmQueryAllKpiMeasureResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryKpiMeasure
+     * @summary Queries a kpiMeasure by index.
+     * @request GET:/supsi-dacd-isaac/pm/pm/kpiMeasure/{index}
+     */
+    queryKpiMeasure: (index: string, params?: RequestParams) => Promise<HttpResponse<PmQueryGetKpiMeasureResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
      * @name QueryLemAll
      * @summary Queries a list of lem items.
      * @request GET:/supsi-dacd-isaac/pm/pm/lem
@@ -236,6 +402,30 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
+     * @name QueryLemMeasureAll
+     * @summary Queries a list of lemMeasure items.
+     * @request GET:/supsi-dacd-isaac/pm/pm/lemMeasure
+     */
+    queryLemMeasureAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<PmQueryAllLemMeasureResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryLemMeasure
+     * @summary Queries a lemMeasure by index.
+     * @request GET:/supsi-dacd-isaac/pm/pm/lemMeasure/{index}
+     */
+    queryLemMeasure: (index: string, params?: RequestParams) => Promise<HttpResponse<PmQueryGetLemMeasureResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
      * @name QueryPlayerAll
      * @summary Queries a list of player items.
      * @request GET:/supsi-dacd-isaac/pm/pm/player
@@ -256,5 +446,29 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @request GET:/supsi-dacd-isaac/pm/pm/player/{index}
      */
     queryPlayer: (index: string, params?: RequestParams) => Promise<HttpResponse<PmQueryGetPlayerResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QuerySlaAll
+     * @summary Queries a list of sla items.
+     * @request GET:/supsi-dacd-isaac/pm/pm/sla
+     */
+    querySlaAll: (query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<PmQueryAllSlaResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QuerySla
+     * @summary Queries a sla by index.
+     * @request GET:/supsi-dacd-isaac/pm/pm/sla/{index}
+     */
+    querySla: (index: string, params?: RequestParams) => Promise<HttpResponse<PmQueryGetSlaResponse, RpcStatus>>;
 }
 export {};

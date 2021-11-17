@@ -1,16 +1,24 @@
-import { Dso } from '../pm/dso';
-import { Player } from '../pm/player';
-import { Aggregator } from '../pm/aggregator';
-import { Lem } from '../pm/lem';
-import { Writer, Reader } from 'protobufjs/minimal';
+import { Dso } from "../pm/dso";
+import { Aggregator } from "../pm/aggregator";
+import { Player } from "../pm/player";
+import { Lem } from "../pm/lem";
+import { LemMeasure } from "../pm/lem_measure";
+import { Sla } from "../pm/sla";
+import { Kpi } from "../pm/kpi";
+import { KpiMeasure } from "../pm/kpi_measure";
+import { Writer, Reader } from "protobufjs/minimal";
 export declare const protobufPackage = "supsidacdisaac.pm.pm";
 /** GenesisState defines the pm module's genesis state. */
 export interface GenesisState {
     dso: Dso | undefined;
-    playerList: Player[];
     aggregator: Aggregator | undefined;
-    /** this line is used by starport scaffolding # genesis/proto/state */
+    playerList: Player[];
     lemList: Lem[];
+    lemMeasureList: LemMeasure[];
+    slaList: Sla[];
+    kpiList: Kpi[];
+    /** this line is used by starport scaffolding # genesis/proto/state */
+    kpiMeasureList: KpiMeasure[];
 }
 export declare const GenesisState: {
     encode(message: GenesisState, writer?: Writer): Writer;

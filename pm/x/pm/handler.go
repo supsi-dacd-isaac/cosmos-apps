@@ -26,15 +26,6 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgDeleteDso:
 			res, err := msgServer.DeleteDso(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgCreatePlayer:
-			res, err := msgServer.CreatePlayer(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgUpdatePlayer:
-			res, err := msgServer.UpdatePlayer(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
-		case *types.MsgDeletePlayer:
-			res, err := msgServer.DeletePlayer(sdk.WrapSDKContext(ctx), msg)
-			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgCreateAggregator:
 			res, err := msgServer.CreateAggregator(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
@@ -44,6 +35,15 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgDeleteAggregator:
 			res, err := msgServer.DeleteAggregator(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCreatePlayer:
+			res, err := msgServer.CreatePlayer(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdatePlayer:
+			res, err := msgServer.UpdatePlayer(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeletePlayer:
+			res, err := msgServer.DeletePlayer(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgCreateLem:
 			res, err := msgServer.CreateLem(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
@@ -52,6 +52,42 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			return sdk.WrapServiceResult(ctx, res, err)
 		case *types.MsgDeleteLem:
 			res, err := msgServer.DeleteLem(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCreateLemMeasure:
+			res, err := msgServer.CreateLemMeasure(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateLemMeasure:
+			res, err := msgServer.UpdateLemMeasure(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeleteLemMeasure:
+			res, err := msgServer.DeleteLemMeasure(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCreateSla:
+			res, err := msgServer.CreateSla(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateSla:
+			res, err := msgServer.UpdateSla(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeleteSla:
+			res, err := msgServer.DeleteSla(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCreateKpi:
+			res, err := msgServer.CreateKpi(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateKpi:
+			res, err := msgServer.UpdateKpi(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeleteKpi:
+			res, err := msgServer.DeleteKpi(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgCreateKpiMeasure:
+			res, err := msgServer.CreateKpiMeasure(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgUpdateKpiMeasure:
+			res, err := msgServer.UpdateKpiMeasure(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+		case *types.MsgDeleteKpiMeasure:
+			res, err := msgServer.DeleteKpiMeasure(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 			// this line is used by starport scaffolding # 1
 		default:
