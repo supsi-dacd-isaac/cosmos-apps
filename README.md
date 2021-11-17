@@ -6,7 +6,7 @@ Each node corresponds to a prosumer and is able to gather data from the related 
 
 ## Requirements:
 
-`Golang >= 1.13.6`
+`Golang >= 1.17.x`
 
 ## Available applications:
 
